@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import { createPaymentIntent, handleWebhook } from "../controllers/payment.controller";
 
-export const paymentRoutes = Router();
+export const paymentRoutes: IRouter = Router();
 
 // Called by frontend before confirming Stripe payment
 paymentRoutes.post("/create-intent", createPaymentIntent);

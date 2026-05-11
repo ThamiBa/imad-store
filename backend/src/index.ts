@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -12,7 +12,7 @@ import { orderRoutes } from "./routes/order.routes";
 import { paymentRoutes } from "./routes/payment.routes";
 import { errorMiddleware } from "./middleware/error.middleware";
 
-const app = express();
+const app: Application = express();
 const PORT = process.env.PORT ?? 4000;
 
 // ─── Global Middleware ───────────────────────────────────────────────────────

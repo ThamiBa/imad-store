@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import {
     register,
     login,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/auth.controller";
 import { authenticate } from "../middleware/auth.middleware";
 
-export const authRoutes = Router();
+export const authRoutes: IRouter = Router();
 
 authRoutes.post("/register", register);
 authRoutes.post("/login", login);

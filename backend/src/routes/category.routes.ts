@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import {
     getCategories,
     getCategory,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/category.controller";
 import { authenticate, requireAdmin } from "../middleware/auth.middleware";
 
-export const categoryRoutes = Router();
+export const categoryRoutes: IRouter = Router();
 
 // Public
 categoryRoutes.get("/", getCategories);

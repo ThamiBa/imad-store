@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import {
     getProducts,
     getProduct,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/product.controller";
 import { authenticate, requireAdmin } from "../middleware/auth.middleware";
 
-export const productRoutes = Router();
+export const productRoutes: IRouter = Router();
 
 // Public
 productRoutes.get("/", getProducts);

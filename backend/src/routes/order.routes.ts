@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import {
     createOrder,
     getMyOrders,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/order.controller";
 import { authenticate, requireAdmin } from "../middleware/auth.middleware";
 
-export const orderRoutes = Router();
+export const orderRoutes: IRouter = Router();
 
 // Customer
 orderRoutes.post("/", createOrder);                              // guest or logged-in
