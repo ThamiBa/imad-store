@@ -1,0 +1,10 @@
+{
+    "name": "@imad-store/shared",
+    "version": "0.0.1",
+    "description": "Shared TypeScript types and utilities for Imad Store",
+    "main": "./src/index.ts",
+    "types": "./src/index.ts",
+    "scripts": {
+        "lint": "tsc --noEmit"
+    }
+}
