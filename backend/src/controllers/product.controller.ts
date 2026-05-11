@@ -13,7 +13,7 @@ const productSchema = z.object({
     descriptionEn: z.string(),
     price: z.number().positive(),
     compareAtPrice: z.number().positive().optional(),
-    images: z.array(z.string().url()),
+    images: z.array(z.string()),
     status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).optional(),
     categoryId: z.string(),
     variants: z.array(

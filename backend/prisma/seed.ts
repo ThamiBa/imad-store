@@ -5,9 +5,9 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log("🌱 Seeding Imad Store...");
+    console.log("🌱 Seeding Imad Store (MongoDB)...");
 
-    // ─── Store Settings ─────────────────────────────────────────────────────────
+    // ─── Store Settings ───────────────────────────────────────────────────────
     await prisma.storeSettings.upsert({
         where: { id: "settings" },
         update: {},
@@ -20,8 +20,9 @@ async function main() {
             stripeEnabled: true,
         },
     });
+    console.log("✅ Store settings seeded");
 
-    // ─── Admin User ─────────────────────────────────────────────────────────────
+    // ─── Admin User ──────────────────────────────────────────────────────────
     const adminHash = await bcrypt.hash("Admin123!", 10);
     await prisma.user.upsert({
         where: { email: "admin@imad-store.ma" },
@@ -34,8 +35,9 @@ async function main() {
             role: "ADMIN",
         },
     });
+    console.log("✅ Admin user seeded → admin@imad-store.ma / Admin123!");
 
-    // ─── Categories ─────────────────────────────────────────────────────────────
+    // ─── Categories ──────────────────────────────────────────────────────────
     const hijab = await prisma.category.upsert({
         where: { slug: "hijab" },
         update: {},
@@ -51,13 +53,14 @@ async function main() {
         update: {},
         create: { slug: "abaya", nameFr: "Abaya", nameAr: "عباءة", nameEn: "Abaya" },
     });
-    const accessoires = await prisma.category.upsert({
+    await prisma.category.upsert({
         where: { slug: "accessoires" },
         update: {},
         create: { slug: "accessoires", nameFr: "Accessoires", nameAr: "إكسسوارات", nameEn: "Accessories" },
     });
+    console.log("✅ 4 categories seeded");
 
-    // ─── Sample Products ─────────────────────────────────────────────────────────
+    // ─── Sample Products ─────────────────────────────────────────────────────
     const products = [
         {
             slug: "hijab-soie-noir",
@@ -111,20 +114,16 @@ async function main() {
         },
     ];
 
-    for (const product of products) {
-        const { variants, ...productData } = product;
-        await prisma.product.upsert({
-            where: { slug: product.slug },
-            update: {},
-            create: {
-                ...productData,
-                status: "ACTIVE",
-                variants: { create: variants },
-            },
-        });
+    for (const { variants, ...productData } of products) {
+        const existing = await prisma.product.findUnique({ where: { slug: productData.slug } });
+        if (!existing) {
+            await prisma.product.create({
+                data: { ...productData, status: "ACTIVE", variants: { create: variants } },
+            });
+        }
     }
-
-    console.log("✅ Seed complete! Categories, products, admin user created.");
+    console.log("✅ 3 sample products seeded");
+    console.log("\n🎉 Seed complete!");
 }
 
 main()

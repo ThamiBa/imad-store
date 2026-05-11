@@ -1,16 +1,16 @@
-// This is your Prisma schema file for Imad Store
-// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Imad Store — Prisma Schema for MongoDB Atlas (free tier)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-// ─── Enums ──────────────────────────────────────────────────────────────────
+// ─── Enums ───────────────────────────────────────────────────────────────────
+// MongoDB supports Prisma enums natively
 
 enum UserRole {
   CUSTOMER
@@ -46,27 +46,27 @@ enum PaymentStatus {
 // ─── User ───────────────────────────────────────────────────────────────────
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
   passwordHash String
   firstName    String
   lastName     String
   phone        String?
-  role         UserRole  @default(CUSTOMER)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  role         UserRole @default(CUSTOMER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  addresses    Address[]
-  orders       Order[]
+  addresses     Address[]
+  orders        Order[]
   refreshTokens RefreshToken[]
 
   @@map("users")
 }
 
 model RefreshToken {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   token     String   @unique
-  userId    String
+  userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
@@ -77,9 +77,9 @@ model RefreshToken {
 // ─── Address ────────────────────────────────────────────────────────────────
 
 model Address {
-  id         String  @id @default(cuid())
-  userId     String?
-  user       User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String? @db.ObjectId
+  user       User?   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   fullName   String
   phone      String
   street     String
@@ -96,7 +96,7 @@ model Address {
 // ─── Category ───────────────────────────────────────────────────────────────
 
 model Category {
-  id       String    @id @default(cuid())
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
   slug     String    @unique
   nameFr   String
   nameAr   String
@@ -110,39 +110,39 @@ model Category {
 // ─── Product ────────────────────────────────────────────────────────────────
 
 model Product {
-  id              String        @id @default(cuid())
-  slug            String        @unique
-  nameFr          String
-  nameAr          String
-  nameEn          String
-  descriptionFr   String        @db.Text
-  descriptionAr   String        @db.Text
-  descriptionEn   String        @db.Text
-  price           Decimal       @db.Decimal(10, 2)
-  compareAtPrice  Decimal?      @db.Decimal(10, 2)
-  images          String[]
-  status          ProductStatus @default(DRAFT)
-  categoryId      String
-  category        Category      @relation(fields: [categoryId], references: [id])
-  variants        ProductVariant[]
-  orderItems      OrderItem[]
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  slug           String           @unique
+  nameFr         String
+  nameAr         String
+  nameEn         String
+  descriptionFr  String
+  descriptionAr  String
+  descriptionEn  String
+  price          Float
+  compareAtPrice Float?
+  images         String[]         // Native array — no JSON hack needed!
+  status         ProductStatus    @default(DRAFT)
+  categoryId     String           @db.ObjectId
+  category       Category         @relation(fields: [categoryId], references: [id])
+  variants       ProductVariant[]
+  orderItems     OrderItem[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
   @@map("products")
 }
 
 model ProductVariant {
-  id           String  @id @default(cuid())
-  productId    String
-  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  color        String
-  colorNameFr  String
-  colorNameAr  String
-  colorNameEn  String
-  size         String?
-  stock        Int     @default(0)
-  sku          String  @unique
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId   String   @db.ObjectId
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color       String
+  colorNameFr String
+  colorNameAr String
+  colorNameEn String
+  size        String?
+  stock       Int      @default(0)
+  sku         String   @unique
 
   orderItems OrderItem[]
 
@@ -152,19 +152,19 @@ model ProductVariant {
 // ─── Order ──────────────────────────────────────────────────────────────────
 
 model Order {
-  id                    String        @id @default(cuid())
-  userId                String?
-  user                  User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id                    String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String?       @db.ObjectId
+  user                  User?         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   guestEmail            String?
   guestPhone            String?
-  addressId             String
+  addressId             String        @db.ObjectId
   address               Address       @relation(fields: [addressId], references: [id])
   status                OrderStatus   @default(PENDING)
   paymentMethod         PaymentMethod
   paymentStatus         PaymentStatus @default(PENDING)
   stripePaymentIntentId String?
-  totalAmount           Decimal       @db.Decimal(10, 2)
-  shippingCost          Decimal       @db.Decimal(10, 2) @default(0)
+  totalAmount           Float
+  shippingCost          Float         @default(0)
   notes                 String?
   items                 OrderItem[]
   createdAt             DateTime      @default(now())
@@ -174,15 +174,15 @@ model Order {
 }
 
 model OrderItem {
-  id        String         @id @default(cuid())
-  orderId   String
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String         @db.ObjectId
   order     Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId String
+  productId String         @db.ObjectId
   product   Product        @relation(fields: [productId], references: [id])
-  variantId String
+  variantId String         @db.ObjectId
   variant   ProductVariant @relation(fields: [variantId], references: [id])
   quantity  Int
-  unitPrice Decimal        @db.Decimal(10, 2)
+  unitPrice Float
 
   @@map("order_items")
 }
@@ -190,10 +190,10 @@ model OrderItem {
 // ─── Store Settings ─────────────────────────────────────────────────────────
 
 model StoreSettings {
-  id              String  @id @default("settings")
+  id              String  @id @map("_id")
   whatsappPhone   String  @default("212XXXXXXXXX")
-  shippingCost    Decimal @db.Decimal(10, 2) @default(30)
-  freeShippingMin Decimal @db.Decimal(10, 2) @default(500)
+  shippingCost    Float   @default(30)
+  freeShippingMin Float   @default(500)
   codEnabled      Boolean @default(true)
   stripeEnabled   Boolean @default(true)
 
