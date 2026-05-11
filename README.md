@@ -47,7 +47,7 @@
 
 The platform is designed with an elegant, high-end aesthetic and supports **three languages** — Arabic (RTL), French, and English — making it accessible to the full Moroccan and diaspora market.
 
-> **"عماد"** means *support* in Arabic — the brand embodies the radiance of modest beauty.
+> **"Imad"** means *support* in Arabic — the brand embodies the radiance of modest beauty.
 
 ### Key Highlights
 
