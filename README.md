@@ -83,7 +83,7 @@ The platform is designed with an elegant, high-end aesthetic and supports **thre
 - Product-specific inquiry links
 - COD order follow-up link
 
-### 👩‍💼 Admin Dashboard (`admin.noor-store.ma`)
+### 👩‍💼 Admin Dashboard (`admin.imad-store.ma`)
 - Revenue & orders overview
 - Full product CRUD with multi-image upload (Supabase Storage)
 - Order management with status updates (Pending → Confirmed → Shipped → Delivered)
@@ -152,8 +152,8 @@ Make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/noor-store.git
-cd noor-store
+git clone https://github.com/your-username/imad-store.git
+cd imad-store
 ```
 
 ### 2. Install Dependencies
@@ -223,7 +223,7 @@ PORT=4000
 CORS_ORIGIN=http://localhost:3000
 
 # Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/noor_store
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/imad_store
 
 # Auth
 JWT_SECRET=your-super-secret-key-min-32-chars
@@ -243,7 +243,7 @@ SUPABASE_STORAGE_BUCKET=product-images
 
 # Resend (Email)
 RESEND_API_KEY=re_...
-EMAIL_FROM=noreply@noor-store.ma
+EMAIL_FROM=noreply@imad-store.ma
 
 # WhatsApp
 WHATSAPP_PHONE=212XXXXXXXXX
@@ -255,6 +255,14 @@ WHATSAPP_PHONE=212XXXXXXXXX
 NEXT_PUBLIC_API_URL=http://localhost:4000/api
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 NEXT_PUBLIC_WHATSAPP_NUMBER=212XXXXXXXXX
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+```
+
+### Admin Panel — `admin/.env.local`
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 ```
@@ -293,6 +301,8 @@ Open [http://localhost:3001](http://localhost:3001)
 Default admin credentials (after seeding):
 - **Email:** `admin@imad-store.ma`
 - **Password:** `Admin123!`
+
+> 💡 The admin panel is a separate Next.js app — it runs independently of the customer storefront.
 
 > ⚠️ Change these immediately in production.
 
@@ -463,7 +473,7 @@ cd admin
 vercel --prod
 ```
 
-Deploy to a subdomain: `admin.noor-store.ma`
+Deploy to a subdomain: `admin.imad-store.ma`
 
 ### Mobile — EAS Build
 
@@ -493,7 +503,7 @@ eas submit --platform ios
 After deploying the backend, configure the Stripe webhook:
 
 1. Go to [Stripe Dashboard → Webhooks](https://dashboard.stripe.com/webhooks)
-2. Add endpoint: `https://api.noor-store.ma/api/payments/webhook`
+2. Add endpoint: `https://api.imad-store.ma/api/payments/webhook`
 3. Select events: `payment_intent.succeeded`, `payment_intent.payment_failed`
 4. Copy the webhook secret → set as `STRIPE_WEBHOOK_SECRET` in backend env
 
@@ -530,6 +540,17 @@ pnpm prisma migrate reset
 | `Order` | Customer orders |
 | `OrderItem` | Line items within an order |
 | `Address` | Delivery addresses |
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] CMI Maroc payment gateway (native Moroccan payment)
+- [ ] Loyalty points system
+- [ ] Product reviews & ratings
+- [ ] Wishlist / saved items
+- [ ] SMS order notifications (via Twilio or local provider)
+- [ ] PWA support for the web app
 
 ---
 
