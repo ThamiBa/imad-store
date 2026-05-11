@@ -291,7 +291,7 @@ pnpm --filter admin dev
 Open [http://localhost:3001](http://localhost:3001)
 
 Default admin credentials (after seeding):
-- **Email:** `admin@noor-store.ma`
+- **Email:** `admin@imad-store.ma`
 - **Password:** `Admin123!`
 
 > ⚠️ Change these immediately in production.
