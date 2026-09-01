@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
-import { ArrowRight, MessageCircle, Sparkles, Mail, ShoppingBag, Star } from "lucide-react";
+import { ArrowRight, MessageCircle, Mail, ShoppingBag, Star } from "lucide-react";
 import { useCartStore } from "@/store/cart.store";
 
 /* ─── Helpers ─────────────────────────────────────────────── */
@@ -88,6 +88,7 @@ const HOT_SELLERS = [
     { id: 12, slug: "hijab-premium-noir", nameFr: "Cape Orientale", nameAr: "كاب شرقي", nameEn: "Oriental Cape", price: 1100, img: "/images/hero-2.png", tag: "Nouveau" },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const MARQUEE_ITEMS = ["Maison de Haute Couture Modeste", "Livraison Express Offerte dès 800 MAD", "Créations Uniques & Éditions Limitées", "Satisfait ou Remboursé 14 Jours"];
 
 /* ─── Components ─────────────────────────────────────────── */

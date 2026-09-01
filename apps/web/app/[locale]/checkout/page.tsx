@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useCartStore } from "@/store/cart.store";
 import { createOrder } from "@/lib/api";
-import { CheckCircle, CreditCard, Ship, AlertCircle } from "lucide-react";
+import { CheckCircle, Ship, AlertCircle } from "lucide-react";
 
 function CheckoutContent({ params }: { params: { locale: string } }) {
     const { locale } = params;
@@ -13,7 +13,7 @@ function CheckoutContent({ params }: { params: { locale: string } }) {
     const isEn = locale === "en";
     const t = useTranslations("checkout");
     const { items, total, clearCart } = useCartStore();
-    const searchParams = useSearchParams();
+
 
     const [paymentMethod, setPaymentMethod] = useState<"COD" | "STRIPE">("COD");
     const [loading, setLoading] = useState(false);
