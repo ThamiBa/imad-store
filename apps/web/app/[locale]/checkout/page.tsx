@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
+
 import { useCartStore } from "@/store/cart.store";
 import { createOrder } from "@/lib/api";
 import { CheckCircle, Ship, AlertCircle } from "lucide-react";

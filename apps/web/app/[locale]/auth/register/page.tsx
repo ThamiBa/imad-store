@@ -62,8 +62,8 @@ export default function RegisterPage({ params }: { params: { locale: string } })
             localStorage.setItem("accessToken", res.data.accessToken);
             localStorage.setItem("refreshToken", res.data.refreshToken);
             router.push(`/${locale}`);
-        } catch (err: any) {
-            const msg = err?.response?.data?.error ?? "";
+        } catch (err: unknown) {
+            const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? "";
             setError(msg.includes("use") ? copy.errDuplicate : copy.errGeneric);
         } finally {
             setLoading(false);
