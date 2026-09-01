@@ -1,0 +1,81 @@
+{
+    "nav": {
+        "home": "الرئيسية",
+        "shop": "المتجر",
+        "categories": "الفئات",
+        "cart": "السلة",
+        "account": "حسابي",
+        "whatsapp": "تواصل معنا"
+    },
+    "hero": {
+        "title": "الأناقة المحتشمة",
+        "subtitle": "اكتشفي مجموعتنا الحصرية من الحجاب والنقاب والعباءات الفاخرة.",
+        "cta": "اكتشفي المجموعة",
+        "badge": "مجموعة جديدة"
+    },
+    "home": {
+        "categories_title": "فئاتنا",
+        "arrivals_title": "وصل حديثاً"
+    },
+    "shop": {
+        "title": "كل المتجر",
+        "filter_category": "الفئة",
+        "filter_price": "السعر",
+        "sort_newest": "الأحدث",
+        "sort_price_asc": "السعر تصاعدي",
+        "sort_price_desc": "السعر تنازلي",
+        "all_categories": "الكل",
+        "no_results": "لا توجد منتجات",
+        "items_count": "{count} منتج"
+    },
+    "product": {
+        "add_to_cart": "أضيفي للسلة",
+        "select_size": "اختاري المقاس",
+        "select_color": "اختاري اللون",
+        "in_stock": "متوفر",
+        "out_of_stock": "نفذ المخزون",
+        "related": "قد يعجبك أيضاً"
+    },
+    "cart": {
+        "title": "سلة المشتريات",
+        "empty": "سلتك فارغة",
+        "subtotal": "المجموع الجزئي",
+        "checkout": "إتمام الطلب",
+        "continue": "متابعة التسوق",
+        "remove": "إزالة"
+    },
+    "checkout": {
+        "title": "أكمل طلبك",
+        "shipping": "عنوان التوصيل",
+        "payment": "طريقة الدفع",
+        "cod": "الدفع عند الاستلام",
+        "stripe": "بطاقة بنكية",
+        "full_name": "الاسم الكامل",
+        "phone": "الهاتف",
+        "address": "العنوان",
+        "city": "المدينة",
+        "region": "المنطقة",
+        "submit": "تأكيد الطلب",
+        "success_title": "تم تأكيد طلبك!",
+        "success_msg": "شكراً لطلبك. ستصلك رسالة تأكيد على بريدك الإلكتروني."
+    },
+    "footer": {
+        "tagline": "الأناقة في كل خطوة",
+        "rights": "جميع الحقوق محفوظة"
+    },
+    "auth": {
+        "login_title": "تسجيل الدخول",
+        "login_subtitle": "الولوج إلى فضائكم الخاص",
+        "register_title": "إنشاء حساب",
+        "register_subtitle": "الانضمام إلى نادي عماد مود الخاص",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "first_name": "الاسم الشخصي",
+        "last_name": "الاسم العائلي",
+        "phone": "رقم الهاتف",
+        "login_btn": "تسجيل الدخول",
+        "register_btn": "إنشاء الحساب",
+        "no_account": "ليس لديكم حساب بعد؟",
+        "have_account": "لديكم حساب بالفعل؟"
+    }
+}

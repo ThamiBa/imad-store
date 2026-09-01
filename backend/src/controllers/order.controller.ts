@@ -4,6 +4,7 @@ import { prisma } from "../lib/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { AppError } from "../middleware/error.middleware";
 import { sendOrderConfirmation } from "../lib/resend";
+import { sendOrderWhatsAppNotification } from "../lib/whatsapp";
 
 const createOrderSchema = z.object({
     userId: z.string().optional(),
@@ -98,6 +99,25 @@ export async function createOrder(req: Request, res: Response) {
             })),
         }).catch(console.error);
     }
+
+    // Trigger WhatsApp notification for the customer & owner
+    sendOrderWhatsAppNotification({
+        id: order.id,
+        totalAmount,
+        paymentMethod: body.paymentMethod,
+        address: {
+            fullName: body.address.fullName,
+            phone: body.address.phone,
+            street: body.address.street,
+            city: body.address.city,
+            region: body.address.region,
+        },
+        items: orderItems.map((item, i) => ({
+            name: products.find(p => p.id === item.productId)?.nameFr ?? "Produit",
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+        })),
+    }).catch(console.error);
 
     res.status(201).json({ success: true, data: order });
 }

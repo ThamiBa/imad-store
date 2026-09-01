@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design Tokens ──────────────────────────────────────── */
+:root {
+  --gold: #C9A96E;
+  --gold-light: #E8D5A3;
+  --gold-dark: #A8883F;
+  --navy: #1A1A2E;
+  --ivory: #F5EDE0;
+  --alabaster: #FDFAF6;
+  --charcoal: #2C2C3E;
+  --muted: #8B8399;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--alabaster);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [dir="rtl"] body {
+    font-family: 'Amiri', 'DM Sans', sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Cormorant Garamond', 'Amiri', serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .btn-gold {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden bg-[#C9A96E] text-white font-medium tracking-widest uppercase text-xs px-8 py-4 transition-all duration-500;
+  }
+
+  .btn-gold::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20 translate-y-full transition-transform duration-500;
+  }
+
+  .btn-gold:hover::after {
+    @apply translate-y-0;
+  }
+
+  .btn-outline-gold {
+    @apply inline-flex items-center justify-center gap-2 border border-[#C9A96E] text-[#C9A96E] font-medium tracking-widest uppercase text-xs px-8 py-4 hover:bg-[#C9A96E] hover:text-white transition-all duration-500;
+  }
+
+  .section-eyebrow {
+    @apply text-[#C9A96E] tracking-[0.3em] uppercase text-xs font-medium mb-4;
+  }
+
+  .luxury-heading {
+    font-family: 'Cormorant Garamond', serif;
+    @apply font-light leading-tight;
+  }
+
+  .product-card {
+    @apply relative overflow-hidden bg-[#F5EDE0] cursor-pointer;
+  }
+
+  .glass-nav {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(253, 250, 246, 0.85);
+    border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+  }
+}
+
+/* ─── Scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--alabaster);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+}
+
+/* ─── Selection ────────────────────────────────────────── */
+::selection {
+  background: rgba(201, 169, 110, 0.2);
+  color: var(--navy);
+}
+
+/* ─── Ping animation variants ──────────────────────────── */
+@keyframes ping-gold {
+
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping-gold {
+  animation: ping-gold 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ─── Marquee ────────────────────────────────────────────── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-inner {
+  animation: marquee 20s linear infinite;
+}
+
+[dir="rtl"] .marquee-inner {
+  animation-direction: reverse;
+}

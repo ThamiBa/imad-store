@@ -58,7 +58,12 @@ async function main() {
         update: {},
         create: { slug: "accessoires", nameFr: "Accessoires", nameAr: "إكسسوارات", nameEn: "Accessories" },
     });
-    console.log("✅ 4 categories seeded");
+    const shoes = await prisma.category.upsert({
+        where: { slug: "shoes" },
+        update: {},
+        create: { slug: "shoes", nameFr: "Souliers", nameAr: "أحذية", nameEn: "Shoes" },
+    });
+    console.log("✅ 5 categories seeded");
 
     // ─── Sample Products ─────────────────────────────────────────────────────
     const products = [

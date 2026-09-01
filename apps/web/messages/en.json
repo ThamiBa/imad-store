@@ -1,0 +1,81 @@
+{
+    "nav": {
+        "home": "Home",
+        "shop": "Shop",
+        "categories": "Categories",
+        "cart": "Cart",
+        "account": "My Account",
+        "whatsapp": "Contact Us"
+    },
+    "hero": {
+        "title": "Modest Elegance",
+        "subtitle": "Discover our exclusive collection of luxury hijabs, niqabs and abayas.",
+        "cta": "Explore the Collection",
+        "badge": "New Collection"
+    },
+    "home": {
+        "categories_title": "Our Categories",
+        "arrivals_title": "New Arrivals"
+    },
+    "shop": {
+        "title": "All Products",
+        "filter_category": "Category",
+        "filter_price": "Price",
+        "sort_newest": "Newest",
+        "sort_price_asc": "Price: Low to High",
+        "sort_price_desc": "Price: High to Low",
+        "all_categories": "All",
+        "no_results": "No products found",
+        "items_count": "{count} item(s)"
+    },
+    "product": {
+        "add_to_cart": "Add to Cart",
+        "select_size": "Select a size",
+        "select_color": "Select a color",
+        "in_stock": "In stock",
+        "out_of_stock": "Out of stock",
+        "related": "You might also like"
+    },
+    "cart": {
+        "title": "Your Cart",
+        "empty": "Your cart is empty",
+        "subtotal": "Subtotal",
+        "checkout": "Checkout",
+        "continue": "Continue Shopping",
+        "remove": "Remove"
+    },
+    "checkout": {
+        "title": "Complete your order",
+        "shipping": "Shipping Address",
+        "payment": "Payment Method",
+        "cod": "Cash on Delivery",
+        "stripe": "Credit Card (Stripe)",
+        "full_name": "Full Name",
+        "phone": "Phone",
+        "address": "Address",
+        "city": "City",
+        "region": "Region",
+        "submit": "Place Order",
+        "success_title": "Order Confirmed!",
+        "success_msg": "Thank you for your order. You will receive an email confirmation."
+    },
+    "footer": {
+        "tagline": "الأناقة في كل خطوة",
+        "rights": "All rights reserved"
+    },
+    "auth": {
+        "login_title": "Sign In",
+        "login_subtitle": "Access your exclusive space",
+        "register_title": "Create Account",
+        "register_subtitle": "Join the private club IMAD Mode",
+        "email": "Email Address",
+        "password": "Password",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "phone": "Phone Number",
+        "login_btn": "Sign In",
+        "register_btn": "Create Account",
+        "no_account": "Don't have an account?",
+        "have_account": "Already have an account?"
+    }
+}

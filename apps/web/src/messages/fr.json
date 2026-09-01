@@ -1,0 +1,66 @@
+{
+    "nav": {
+        "home": "Accueil",
+        "shop": "Boutique",
+        "categories": "Catégories",
+        "cart": "Panier",
+        "account": "Mon Compte",
+        "whatsapp": "Nous contacter"
+    },
+    "hero": {
+        "title": "L'Élégance Modeste",
+        "subtitle": "Découvrez notre collection exclusive de hijabs, niqabs et abayas de luxe.",
+        "cta": "Découvrir la Collection",
+        "badge": "Nouvelle Collection"
+    },
+    "home": {
+        "categories_title": "Nos Catégories",
+        "arrivals_title": "Nouveautés"
+    },
+    "shop": {
+        "title": "Toute la Boutique",
+        "filter_category": "Catégorie",
+        "filter_price": "Prix",
+        "sort_newest": "Plus récents",
+        "sort_price_asc": "Prix croissant",
+        "sort_price_desc": "Prix décroissant",
+        "all_categories": "Toutes",
+        "no_results": "Aucun produit trouvé",
+        "items_count": "{count} article(s)"
+    },
+    "product": {
+        "add_to_cart": "Ajouter au panier",
+        "select_size": "Choisir une taille",
+        "select_color": "Choisir une couleur",
+        "in_stock": "En stock",
+        "out_of_stock": "Rupture de stock",
+        "related": "Vous aimerez aussi"
+    },
+    "cart": {
+        "title": "Votre Panier",
+        "empty": "Votre panier est vide",
+        "subtotal": "Sous-total",
+        "checkout": "Commander",
+        "continue": "Continuer mes achats",
+        "remove": "Supprimer"
+    },
+    "checkout": {
+        "title": "Finaliser la commande",
+        "shipping": "Adresse de livraison",
+        "payment": "Mode de paiement",
+        "cod": "Paiement à la livraison",
+        "stripe": "Carte bancaire (Stripe)",
+        "full_name": "Nom complet",
+        "phone": "Téléphone",
+        "address": "Adresse",
+        "city": "Ville",
+        "region": "Région",
+        "submit": "Confirmer la commande",
+        "success_title": "Commande confirmée !",
+        "success_msg": "Merci pour votre commande. Vous recevrez une confirmation par email."
+    },
+    "footer": {
+        "tagline": "الأناقة في كل خطوة",
+        "rights": "Tous droits réservés"
+    }
+}
