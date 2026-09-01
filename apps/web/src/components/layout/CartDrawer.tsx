@@ -1,10 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight, Truck, CreditCard, ShieldCheck, Gift, Sparkles, Check } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight, Truck, ShieldCheck, Gift, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+
 import { useCartStore, CartItem } from "@/store/cart.store";
 
 function locName(item: CartItem, locale: string) {

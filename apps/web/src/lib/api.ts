@@ -111,12 +111,15 @@ export interface AuthResponse {
     };
 }
 
-export const loginUser = async (payload: any): Promise<AuthResponse> => {
+interface LoginPayload { email: string; password: string; }
+interface RegisterPayload { email: string; password: string; name?: string; }
+
+export const loginUser = async (payload: LoginPayload): Promise<AuthResponse> => {
     const { data } = await api.post("/auth/login", payload);
     return data;
 };
 
-export const registerUser = async (payload: any): Promise<AuthResponse> => {
+export const registerUser = async (payload: RegisterPayload): Promise<AuthResponse> => {
     const { data } = await api.post("/auth/register", payload);
     return data;
 };
