@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight, Truck, ShieldCheck, Gift, Sparkles } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Gift, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

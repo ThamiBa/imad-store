@@ -68,11 +68,16 @@ export default function ProductDetailPage({ params }: { params: { locale: string
             id: product.id, slug: product.slug,
             nameFr: product.nameFr, nameAr: product.nameAr, nameEn: product.nameEn,
             price: product.price, images: product.images,
-        } as any, {
+            descriptionFr: "", descriptionAr: "", descriptionEn: "", status: "active",
+            category: { id: "", slug: "", nameFr: "", nameAr: "", nameEn: "" },
+            variants: [],
+        }, {
             id: variant.id,
+            color: activeColor,
             colorNameFr: colorInfo.labelFr, colorNameAr: colorInfo.labelAr, colorNameEn: colorInfo.labelEn,
             size: variant.size,
-        } as any, qty);
+            stock: 10, sku: product.sku,
+        }, qty);
         setAddedAnim(true);
         setTimeout(() => setAddedAnim(false), 1800);
         openCart();
