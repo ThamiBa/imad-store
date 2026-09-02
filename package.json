@@ -1,7 +1,11 @@
 {
   "name": "imad-store",
   "private": true,
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18.17.0",
+    "pnpm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
