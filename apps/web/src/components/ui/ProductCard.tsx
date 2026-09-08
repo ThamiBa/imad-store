@@ -35,7 +35,7 @@ function getName(p: MockProduct, locale: string) {
 
 /* ── Component ─────────────────────────────────────────────── */
 export function ProductCard({ product, locale, index = 0 }: Props) {
-    const { openCart } = useCartStore();
+    const { addItem, openCart } = useCartStore();
     const [wished, setWished] = useState(false);
     const [imgIdx, setImgIdx] = useState(0);
 
@@ -47,7 +47,23 @@ export function ProductCard({ product, locale, index = 0 }: Props) {
     const handleQuickAdd = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        // Quick-add first available variant — opens cart
+
+        if (product.variants.length > 0) {
+            const variant = product.variants.find(v => v.instock) || product.variants[0];
+            addItem({
+                id: product.id, slug: product.slug,
+                nameFr: product.nameFr, nameAr: product.nameAr, nameEn: product.nameEn,
+                price: product.price, images: product.images,
+                descriptionFr: "", descriptionAr: "", descriptionEn: "", status: "active",
+                category: { id: "", slug: product.category, nameFr: product.category, nameAr: product.category, nameEn: product.category },
+                variants: [],
+            }, {
+                id: variant.id,
+                color: variant.color, colorNameFr: variant.colorLabel, colorNameAr: variant.colorLabel, colorNameEn: variant.colorLabel,
+                size: variant.size || "Standard", stock: 10, sku: product.id,
+            }, 1);
+        }
+
         openCart();
     };
 

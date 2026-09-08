@@ -60,7 +60,7 @@ export async function handleWebhook(req: Request, res: Response) {
                 },
             });
 
-            const email = order.guestEmail ?? order.user?.email;
+            const email = order.customerEmail ?? order.user?.email;
             if (email) {
                 await sendOrderConfirmation(email, {
                     id: order.id,

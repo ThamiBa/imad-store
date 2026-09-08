@@ -8,9 +8,13 @@ import "express-async-errors";
 import { authRoutes } from "./routes/auth.routes";
 import { productRoutes } from "./routes/product.routes";
 import { categoryRoutes } from "./routes/category.routes";
-import { orderRoutes } from "./routes/order.routes";
+import { orderRoutes, notificationRoutes } from "./routes/order.routes";
 import { paymentRoutes } from "./routes/payment.routes";
+import { addressRoutes } from "./routes/address.routes";
+import { settingsRoutes } from "./routes/settings.routes";
+import { telegramRoutes } from "./routes/telegram.routes";
 import { errorMiddleware } from "./middleware/error.middleware";
+import { syncSheetsToDatabase } from "./lib/notifications";
 
 const app: Application = express();
 const PORT = process.env.PORT ?? 4000;
@@ -40,7 +44,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/telegram", telegramRoutes);
+app.use("/api/addresses", addressRoutes);
+app.use("/api/settings", settingsRoutes);
 
 // ─── Error Handler ───────────────────────────────────────────────────────────
 app.use(errorMiddleware);
@@ -49,5 +57,13 @@ app.use(errorMiddleware);
 app.listen(PORT, () => {
     console.log(`🚀 Imad Store API running on http://localhost:${PORT}`);
 });
+
+// ─── Background Workers ──────────────────────────────────────────────────────
+// Google Sheets → DB sync (polls every 30s)
+setInterval(() => {
+    syncSheetsToDatabase().catch((err) =>
+        console.error("Sheets → DB sync worker error:", err)
+    );
+}, 30_000);
 
 export default app;

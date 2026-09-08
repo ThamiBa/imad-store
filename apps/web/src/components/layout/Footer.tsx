@@ -3,17 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export function Footer({ locale }: { locale: string }) {
-    const isAr = locale === "ar";
-
-    const t = {
-        rights: isAr ? "جميع الحقوق محفوظة" : "All rights reserved",
-        terms: isAr ? "الشروط والأحكام" : "Terms",
-        privacy: isAr ? "سياسة الخصوصية" : "Privacy",
-        contact: isAr ? "اتصل بنا" : "Contact",
-        delivery: "توصيل لجميع أنحاء المغرب — الدفع عند الاستلام",
-    };
-
+export function Footer() {
     return (
         <footer dir="rtl" className="bg-[#FDFAF6] text-[#1A1A2E] border-t border-[#C9A96E]/20">
 
@@ -27,7 +17,7 @@ export function Footer({ locale }: { locale: string }) {
                     >
                         {[...Array(6)].map((_, i) => (
                             <span key={i} className="flex items-center gap-4 text-[16px] md:text-[18px] font-bold tracking-[0.06em] text-[#C9A96E]">
-                                🚚 {t.delivery}
+                                🚚 توصيل لجميع أنحاء المغرب — الدفع عند الاستلام
                             </span>
                         ))}
                     </motion.div>
@@ -38,8 +28,8 @@ export function Footer({ locale }: { locale: string }) {
             <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24 grid grid-cols-1 md:grid-cols-3 gap-16">
 
                 {/* ── Col 1: Logo ── */}
-                <div className="flex flex-col items-start md:items-center gap-6">
-                    <Link href={`/${locale}`} className="flex flex-col items-center group">
+                <div className="flex flex-col items-start gap-6">
+                    <Link href="/" className="flex flex-col items-start group">
                         <span
                             className="text-5xl font-light tracking-[0.2em] text-[#1A1A2E] group-hover:text-[#C9A96E] transition-colors duration-300"
                             style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -51,23 +41,23 @@ export function Footer({ locale }: { locale: string }) {
                         </span>
                     </Link>
                     <div className="w-10 h-px bg-[#C9A96E]/40" />
-                    <p className="text-[14px] tracking-[0.05em] text-[#1A1A2E]/50 text-center leading-relaxed">
-                        {isAr ? "أزياء مغربية فاخرة" : "Mode Marocaine de Luxe"}
+                    <p className="text-[14px] tracking-[0.05em] text-[#1A1A2E]/50 text-start leading-relaxed">
+                        أزياء مغربية فاخرة
                     </p>
                 </div>
 
                 {/* ── Col 2: Navigation ── */}
-                <div className="flex flex-col items-start md:items-center">
+                <div className="flex flex-col items-start">
                     <p className="text-[15px] tracking-[0.3em] uppercase text-[#C9A96E] font-semibold mb-8">
-                        {isAr ? "روابط" : "Navigation"}
+                        روابط سريعة
                     </p>
-                    <div className="flex flex-col items-start md:items-center gap-5">
+                    <div className="flex flex-col items-start gap-5">
                         {[
-                            { label: isAr ? "الرئيسية" : "Accueil", href: `/${locale}` },
-                            { label: isAr ? "المتجر" : "Boutique", href: `/${locale}/shop` },
-                            { label: t.contact, href: `/${locale}/contact` },
-                            { label: t.terms, href: "#" },
-                            { label: t.privacy, href: "#" },
+                            { label: "الرئيسية", href: "/" },
+                            { label: "المتجر", href: "/shop" },
+                            { label: "اتصل بنا", href: "#" },
+                            { label: "الشروط والأحكام", href: "#" },
+                            { label: "سياسة الخصوصية", href: "#" },
                         ].map((link, i) => (
                             <Link
                                 key={i}
@@ -80,14 +70,23 @@ export function Footer({ locale }: { locale: string }) {
                     </div>
                 </div>
 
-                {/* ── Col 3: Social icons — BRAND COLORS ── */}
-                <div className="flex flex-col items-start md:items-center">
+                {/* ── Col 3: Social icons & Working Hours ── */}
+                <div className="flex flex-col items-start">
                     <p className="text-[15px] tracking-[0.3em] uppercase text-[#C9A96E] font-semibold mb-8">
-                        {isAr ? "تواصل معنا" : "Réseaux"}
+                        تواصل معنا ومواعيد العمل
                     </p>
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col items-start gap-5 mb-8">
+                        <div className="text-[14px] tracking-[0.08em] text-[#1A1A2E]/60">
+                            <strong>مواعيد العمل:</strong>
+                            <br />
+                            من الإثنين إلى السبت
+                            <br />
+                            10:00 صباحاً - 8:00 مساءً
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-start gap-5">
 
-                        {/* WhatsApp — green icon */}
+                        {/* WhatsApp */}
                         <a href="https://wa.me/212660560522" target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-4 group">
                             <svg width="28" height="28" viewBox="0 0 24 24" className="shrink-0">
@@ -97,7 +96,7 @@ export function Footer({ locale }: { locale: string }) {
                             <span className="text-[14px] tracking-[0.08em] text-[#25D366] font-medium">WhatsApp</span>
                         </a>
 
-                        {/* Instagram — gradient icon */}
+                        {/* Instagram */}
                         <a href="https://www.instagram.com/imad.mode?igsi=em85MTVmanRpa29p" target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-4 group">
                             <svg width="28" height="28" viewBox="0 0 24 24" className="shrink-0">
@@ -115,7 +114,7 @@ export function Footer({ locale }: { locale: string }) {
                             <span className="text-[14px] tracking-[0.08em] text-[#E1306C] font-medium">Instagram</span>
                         </a>
 
-                        {/* Facebook — blue icon */}
+                        {/* Facebook */}
                         <a href="https://www.facebook.com/share/1Lwh3Akcuo/" target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-4 group">
                             <svg width="28" height="28" viewBox="0 0 24 24" className="shrink-0">
@@ -124,7 +123,7 @@ export function Footer({ locale }: { locale: string }) {
                             <span className="text-[14px] tracking-[0.08em] text-[#1877F2] font-medium">Facebook</span>
                         </a>
 
-                        {/* TikTok — black icon */}
+                        {/* TikTok */}
                         <a href="https://www.tiktok.com/@imad_mode?_r=1&_t=ZS-99NC3oV9y44" target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-4 group">
                             <svg width="28" height="28" viewBox="0 0 24 24" className="shrink-0">
@@ -133,7 +132,7 @@ export function Footer({ locale }: { locale: string }) {
                             <span className="text-[14px] tracking-[0.08em] text-[#010101] font-medium">TikTok</span>
                         </a>
 
-                        {/* Google Maps — colored pin */}
+                        {/* Google Maps */}
                         <a href="https://maps.app.goo.gl/SrttcX2rKiUH7FWD7" target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-4 group">
                             <svg width="28" height="28" viewBox="0 0 24 24" className="shrink-0">
@@ -149,7 +148,7 @@ export function Footer({ locale }: { locale: string }) {
 
             {/* ── Bottom strip ── */}
             <div className="border-t border-[#C9A96E]/15 py-6 text-center text-[12px] tracking-[0.2em] text-[#1A1A2E]/40">
-                © {new Date().getFullYear()} IMAD Mode — {t.rights}
+                © {new Date().getFullYear()} IMAD Mode — جميع الحقوق محفوظة
             </div>
         </footer>
     );

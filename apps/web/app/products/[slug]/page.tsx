@@ -18,16 +18,13 @@ const MOCK_PRODUCT = {
     compareAt: 1200,
     sku: "IS-AB-01-IVR",
     category: "Abayas",
-    descFr: "Tissée à la main dans nos ateliers de Marrakech, cette abaya en soie pure incarne l'élégance modeste à son apogée. Ses broderies dorées appliquées à la main capturent la lumière avec grâce, tandis que le tombé fluide épouse chaque silhouette.",
     descAr: "منسوجة يدويًا في ورشاتنا بمراكش، تجسد هذه العباءة الحريرية قمة الأناقة المحتشمة. تلتقط تطريزاتها الذهبية المطبقة يدويًا الضوءَ برشاقة، بينما يتدلى القماش الانسيابي ليلائم كل جسد.",
-    descEn: "Hand-woven in our Marrakech atelier, this pure silk abaya embodies modest elegance at its peak. Its hand-applied golden embroideries capture light with grace, while the fluid drape flatters every silhouette.",
     images: ["/images/hero-1.png", "/images/cat-abayas.png", "/images/hero-2.png"],
     colors: [
-        { hex: "#F5EDE0", labelFr: "Ivoire", labelAr: "عاجي", labelEn: "Ivory" },
-        { hex: "#1A1A2E", labelFr: "Nuit", labelAr: "أزرق ليلي", labelEn: "Midnight" },
-        { hex: "#C9A96E", labelFr: "Or", labelAr: "ذهبي", labelEn: "Gold" },
+        { hex: "#F5EDE0", labelAr: "عاجي" },
+        { hex: "#1A1A2E", labelAr: "أزرق ليلي" },
+        { hex: "#C9A96E", labelAr: "ذهبي" },
     ],
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     variants: [
         { id: "v1", color: "#F5EDE0", size: "XS", instock: true },
         { id: "v2", color: "#F5EDE0", size: "S", instock: true },
@@ -39,8 +36,7 @@ const MOCK_PRODUCT = {
     ],
 };
 
-export default function ProductDetailPage({ params }: { params: { locale: string; slug: string } }) {
-    const { locale } = params;
+export default function ProductDetailPage() {
     const product = MOCK_PRODUCT;
 
     const [imgIdx, setImgIdx] = useState(0);
@@ -51,8 +47,6 @@ export default function ProductDetailPage({ params }: { params: { locale: string
     const [addedAnim, setAddedAnim] = useState(false);
     const { addItem, openCart } = useCartStore();
 
-    const name = locale === "ar" ? product.nameAr : locale === "en" ? product.nameEn : product.nameFr;
-    const desc = locale === "ar" ? product.descAr : locale === "en" ? product.descEn : product.descFr;
     const discount = product.compareAt ? Math.round((1 - product.price / product.compareAt) * 100) : null;
 
     const sizesForColor = product.variants
@@ -74,7 +68,7 @@ export default function ProductDetailPage({ params }: { params: { locale: string
         }, {
             id: variant.id,
             color: activeColor,
-            colorNameFr: colorInfo.labelFr, colorNameAr: colorInfo.labelAr, colorNameEn: colorInfo.labelEn,
+            colorNameFr: colorInfo.labelAr, colorNameAr: colorInfo.labelAr, colorNameEn: colorInfo.labelAr,
             size: variant.size,
             stock: 10, sku: product.sku,
         }, qty);
@@ -83,33 +77,17 @@ export default function ProductDetailPage({ params }: { params: { locale: string
         openCart();
     };
 
-    /* ── labels ── */
-    const L = {
-        breadHome: locale === "ar" ? "الرئيسية" : "Accueil",
-        breadCat: locale === "ar" ? "عبايات" : "Abayas",
-        color: locale === "ar" ? "اللون" : locale === "en" ? "Color" : "Couleur",
-        size: locale === "ar" ? "المقاس" : locale === "en" ? "Size" : "Taille",
-        guide: locale === "ar" ? "دليل المقاسات" : locale === "en" ? "Size guide" : "Guide tailles",
-        addCart: locale === "ar" ? "أضف إلى السلة" : locale === "en" ? "Add to Bag" : "Ajouter au Panier",
-        added: locale === "ar" ? "تمت الإضافة ✓" : locale === "en" ? "Added ✓" : "Ajouté ✓",
-        noSize: locale === "ar" ? "اختر مقاساً أولاً" : locale === "en" ? "Choose a size" : "Choisissez une taille",
-        ref: locale === "ar" ? "المرجع" : locale === "en" ? "Ref" : "Réf.",
-        returns: locale === "ar" ? "إرجاع مجاني خلال 14 يوم" : locale === "en" ? "Free returns within 14 days" : "Retours gratuits sous 14 jours",
-        delivery: locale === "ar" ? "توصيل مجاني في المغرب" : locale === "en" ? "Free delivery in Morocco" : "Livraison offerte au Maroc",
-        secure: locale === "ar" ? "دفع آمن ومضمون" : locale === "en" ? "Secure payment" : "Paiement sécurisé",
-    };
-
     return (
         <div className="min-h-screen bg-[#FDFAF6]">
 
             {/* ── Breadcrumb ── */}
             <div className="pt-32 pb-0 max-w-[1600px] mx-auto px-10">
                 <nav className="flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-[#8B8399] font-medium">
-                    <Link href={`/${locale}`} className="hover:text-[#C9A96E] transition-colors">{L.breadHome}</Link>
+                    <Link href="/" className="hover:text-[#C9A96E] transition-colors">الرئيسية</Link>
                     <span className="mx-2">/</span>
-                    <Link href={`/${locale}/shop?category=abayas`} className="hover:text-[#C9A96E] transition-colors">{L.breadCat}</Link>
+                    <Link href="/shop?category=abayas" className="hover:text-[#C9A96E] transition-colors">عبايات</Link>
                     <span className="mx-2">/</span>
-                    <span className="text-[#C9A96E] truncate max-w-[200px]">{name}</span>
+                    <span className="text-[#C9A96E] truncate max-w-[200px]">{product.nameAr}</span>
                 </nav>
             </div>
 
@@ -127,7 +105,7 @@ export default function ProductDetailPage({ params }: { params: { locale: string
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.5, ease: "easeOut" }}>
-                                <Image src={product.images[imgIdx]} alt={name} fill className="object-cover" priority />
+                                <Image src={product.images[imgIdx]} alt={product.nameAr} fill className="object-cover" priority />
                             </motion.div>
                         </AnimatePresence>
 
@@ -139,7 +117,7 @@ export default function ProductDetailPage({ params }: { params: { locale: string
                                 </span>
                             )}
                             <span className="bg-[#C9A96E] text-white text-[8px] tracking-[0.2em] uppercase px-3 py-1.5">
-                                {locale === "ar" ? "إصدار محدود" : "Édition limitée"}
+                                إصدار محدود
                             </span>
                         </div>
 
@@ -200,7 +178,7 @@ export default function ProductDetailPage({ params }: { params: { locale: string
                     {/* Name */}
                     <h1 className="text-[#1A1A2E] text-3xl md:text-4xl font-light leading-snug"
                         style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-                        {name}
+                        {product.nameAr}
                     </h1>
 
                     {/* Price */}
@@ -220,9 +198,9 @@ export default function ProductDetailPage({ params }: { params: { locale: string
                     {/* Color selector */}
                     <div>
                         <div className="flex items-center justify-between mb-3">
-                            <p className="text-[9px] tracking-[0.25em] uppercase text-[#1A1A2E]/60 font-medium">{L.color}</p>
+                            <p className="text-[9px] tracking-[0.25em] uppercase text-[#1A1A2E]/60 font-medium">اللون</p>
                             <span className="text-xs text-[#C9A96E]">
-                                {product.colors.find(c => c.hex === activeColor)?.[`label${locale === "ar" ? "Ar" : locale === "en" ? "En" : "Fr"}` as "labelFr"]}
+                                {product.colors.find(c => c.hex === activeColor)?.labelAr}
                             </span>
                         </div>
                         <div className="flex items-center gap-3">
@@ -243,9 +221,9 @@ export default function ProductDetailPage({ params }: { params: { locale: string
                     {/* Size selector */}
                     <div>
                         <div className="flex items-center justify-between mb-3">
-                            <p className="text-[9px] tracking-[0.25em] uppercase text-[#1A1A2E]/60 font-medium">{L.size}</p>
+                            <p className="text-[9px] tracking-[0.25em] uppercase text-[#1A1A2E]/60 font-medium">المقاس</p>
                             <button className="text-[9px] tracking-widest uppercase text-[#C9A96E] underline underline-offset-2 hover:opacity-70 transition-opacity">
-                                {L.guide}
+                                دليل المقاسات
                             </button>
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -281,25 +259,25 @@ export default function ProductDetailPage({ params }: { params: { locale: string
                                 }`}
                         >
                             <ShoppingBag size={15} strokeWidth={1.5} />
-                            {!activeSize ? L.noSize : addedAnim ? L.added : L.addCart}
+                            {!activeSize ? "اختر مقاساً أولاً" : addedAnim ? "تمت الإضافة ✓" : "أضف إلى السلة"}
                         </button>
                     </div>
 
                     <p className="text-[9px] tracking-widest text-[#8B8399] text-center">
-                        {L.ref}: <span className="text-[#1A1A2E]">{product.sku}</span>
+                        المرجع: <span className="text-[#1A1A2E]">{product.sku}</span>
                     </p>
 
                     <hr className="border-[#C9A96E]/15" />
 
                     {/* Description */}
-                    <p className="text-[#1A1A2E]/70 text-sm leading-relaxed">{desc}</p>
+                    <p className="text-[#1A1A2E]/70 text-sm leading-relaxed">{product.descAr}</p>
 
                     {/* Perks */}
                     <div className="flex flex-col gap-3 bg-white border border-[#C9A96E]/15 px-6 py-5">
                         {[
-                            { icon: <Truck size={15} strokeWidth={1.5} />, text: L.delivery },
-                            { icon: <RotateCcw size={15} strokeWidth={1.5} />, text: L.returns },
-                            { icon: <ShieldCheck size={15} strokeWidth={1.5} />, text: L.secure },
+                            { icon: <Truck size={15} strokeWidth={1.5} />, text: "توصيل مجاني في المغرب" },
+                            { icon: <RotateCcw size={15} strokeWidth={1.5} />, text: "إرجاع مجاني خلال 14 يوم" },
+                            { icon: <ShieldCheck size={15} strokeWidth={1.5} />, text: "دفع آمن ومضمون" },
                         ].map((p, i) => (
                             <div key={i} className="flex items-center gap-3 text-xs text-[#1A1A2E]/70">
                                 <span className="text-[#C9A96E] shrink-0">{p.icon}</span>

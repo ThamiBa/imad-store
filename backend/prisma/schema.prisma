@@ -93,6 +93,18 @@ model Address {
   @@map("addresses")
 }
 
+model AdminNotification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  type      String   // "new_order" | "low_stock" | etc.
+  title     String
+  message   String
+  orderId   String?  @db.ObjectId
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("admin_notifications")
+}
+
 // ─── Category ───────────────────────────────────────────────────────────────
 
 model Category {
@@ -155,10 +167,19 @@ model Order {
   id                    String        @id @default(auto()) @map("_id") @db.ObjectId
   userId                String?       @db.ObjectId
   user                  User?         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  guestEmail            String?
-  guestPhone            String?
-  addressId             String        @db.ObjectId
-  address               Address       @relation(fields: [addressId], references: [id])
+  // Guest customer info (denormalized so admins can see the order without joining Address)
+  customerName          String?
+  customerPhone         String?
+  customerEmail         String?
+  addressId             String?       @db.ObjectId
+  address               Address?      @relation(fields: [addressId], references: [id])
+  // Delivery address snapshot (for guest orders where no Address row is required)
+  fullName              String?
+  phone                 String?
+  street                String?
+  city                  String?
+  region                String?
+  postalCode            String?
   status                OrderStatus   @default(PENDING)
   paymentMethod         PaymentMethod
   paymentStatus         PaymentStatus @default(PENDING)
@@ -167,6 +188,7 @@ model Order {
   shippingCost          Float         @default(0)
   notes                 String?
   items                 OrderItem[]
+  events                OrderEvent[]
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
 
@@ -187,6 +209,19 @@ model OrderItem {
   @@map("order_items")
 }
 
+// ─── Order Event (lightweight admin notification log) ────────────────────────
+model OrderEvent {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String   @db.ObjectId
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type      String   // "created" | "status_changed" | "payment_received" | etc.
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("order_events")
+}
+
 // ─── Store Settings ─────────────────────────────────────────────────────────
 
 model StoreSettings {
@@ -195,7 +230,21 @@ model StoreSettings {
   shippingCost    Float   @default(30)
   freeShippingMin Float   @default(500)
   codEnabled      Boolean @default(true)
-  stripeEnabled   Boolean @default(true)
 
   @@map("store_settings")
+}
+
+// ─── Telegram Customer (auto-reply lookup) ───────────────────────────────────
+// When a customer starts a chat with the bot, we record their phone → chatId
+// so the bridge can DM them order acknowledgments automatically.
+model TelegramCustomer {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  phone     String   @unique
+  chatId    String
+  firstName String?
+  username  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("telegram_customers")
 }

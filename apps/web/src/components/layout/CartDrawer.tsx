@@ -5,17 +5,12 @@ import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Gift, Spa
 import Image from "next/image";
 import Link from "next/link";
 
-import { useCartStore, CartItem } from "@/store/cart.store";
+import { useCartStore } from "@/store/cart.store";
 
-function locName(item: CartItem, locale: string) {
-    if (locale === "ar") return item.nameAr;
-    if (locale === "en") return item.nameEn;
-    return item.nameFr;
-}
 
 const FREE_THRESHOLD = 800;
 
-export function CartDrawer({ locale }: { locale: string }) {
+export function CartDrawer() {
     const { items, isOpen, closeCart, updateQty, removeItem, total } = useCartStore();
     const subtotal = total();
     const freeLeft = Math.max(0, FREE_THRESHOLD - subtotal);
@@ -24,26 +19,23 @@ export function CartDrawer({ locale }: { locale: string }) {
     const orderTotal = subtotal + deliveryFee;
 
     const T = {
-        bag: locale === "ar" ? "حقيبتي" : locale === "en" ? "My Bag" : "Mon Panier",
-        items: locale === "ar" ? "قطعة" : locale === "en" ? "item" : "article",
-        empty: locale === "ar" ? "حقيبتك فارغة" : locale === "en" ? "Your bag is empty" : "Votre panier est vide",
-        browse: locale === "ar" ? "تصفح المجموعة" : locale === "en" ? "Explore Collection" : "Explorer la Collection",
-        shippingBar: (n: number) => locale === "ar"
-            ? `أضف ${n.toFixed(0)} درهم للشحن المجاني`
-            : locale === "en" ? `Add ${n.toFixed(0)} MAD for free shipping`
-                : `${n.toFixed(0)} MAD pour la livraison offerte`,
-        freeShip: locale === "ar" ? "🎉 شحن مجاني مفعّل" : locale === "en" ? "🎉 Free shipping unlocked!" : "🎉 Livraison offerte !",
-        subtotal: locale === "ar" ? "المجموع" : locale === "en" ? "Subtotal" : "Sous-total",
-        delivery: locale === "ar" ? "التوصيل" : locale === "en" ? "Delivery" : "Livraison",
-        free: locale === "ar" ? "مجاني" : locale === "en" ? "Free" : "Offerte",
-        total: locale === "ar" ? "المجموع الكلي" : locale === "en" ? "Total" : "Total",
-        payment: locale === "ar" ? "طريقة الدفع" : locale === "en" ? "Payment method" : "Mode de paiement",
-        byCard: locale === "ar" ? "الدفع بالبطاقة" : locale === "en" ? "Pay by Card" : "Paiement par carte",
-        onDelivery: locale === "ar" ? "الدفع عند الاستلام" : locale === "en" ? "Pay on Delivery" : "Paiement à la livraison",
-        order: locale === "ar" ? "تأكيد الطلب" : locale === "en" ? "Place Order" : "Passer la commande",
-        secure: locale === "ar" ? "دفع آمن ومشفّر" : locale === "en" ? "Secure & encrypted" : "Paiement sécurisé et crypté",
-        gift: locale === "ar" ? "إضافة رسالة هدية" : locale === "en" ? "Add a gift message" : "Ajouter un message cadeau",
-        size: locale === "ar" ? "مقاس" : locale === "en" ? "Size" : "Taille",
+        bag: "حقيبتي",
+        items: "قطعة",
+        empty: "حقيبتك فارغة",
+        browse: "تصفح المجموعة",
+        shippingBar: (n: number) => `أضف ${n.toFixed(0)} درهم للشحن المجاني`,
+        freeShip: "🎉 شحن مجاني مفعّل",
+        subtotal: "المجموع",
+        delivery: "التوصيل",
+        free: "مجاني",
+        total: "المجموع الكلي",
+        payment: "طريقة الدفع",
+        byCard: "الدفع بالبطاقة",
+        onDelivery: "الدفع عند الاستلام",
+        order: "تأكيد الطلب",
+        secure: "دفع آمن ومشفّر",
+        gift: "إضافة رسالة هدية",
+        size: "مقاس",
     };
 
     return (
@@ -66,12 +58,12 @@ export function CartDrawer({ locale }: { locale: string }) {
                 {isOpen && (
                     <motion.aside
                         key="cart"
-                        initial={{ x: locale === "ar" ? "-100%" : "100%", opacity: 0.5 }}
+                        initial={{ x: "-100%", opacity: 0.5 }}
                         animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: locale === "ar" ? "-100%" : "100%", opacity: 0 }}
+                        exit={{ x: "-100%", opacity: 0 }}
                         transition={{ type: "spring", stiffness: 280, damping: 34 }}
-                        style={{ position: "fixed", top: 0, ...(locale === "ar" ? { left: 0 } : { right: 0 }), bottom: 0, zIndex: 101, width: "100%", maxWidth: 520 }}
-                        className={`flex flex-col bg-[#FDFAF6] ${locale === "ar" ? 'shadow-[40px_0_120px_rgba(0,0,0,0.35)]' : 'shadow-[-40px_0_120px_rgba(0,0,0,0.35)]'}`}
+                        style={{ position: "fixed", top: 0, ...({ left: 0 }), bottom: 0, zIndex: 101, width: "100%", maxWidth: 520 }}
+                        className="flex flex-col bg-[#FDFAF6] shadow-[40px_0_120px_rgba(0,0,0,0.35)]"
                     >
                         {/* ─── DARK EDITORIAL HEADER ─── */}
                         <div className="relative bg-[#1A1A2E] px-8 pt-7 pb-6 shrink-0">
@@ -134,10 +126,10 @@ export function CartDrawer({ locale }: { locale: string }) {
                                         <p className="text-2xl font-light text-[#1A1A2E]"
                                             style={{ fontFamily: "'Cormorant Garamond', serif" }}>{T.empty}</p>
                                         <p className="text-[9px] tracking-[0.25em] uppercase text-[#8B8399]">
-                                            {locale === "ar" ? "اكتشفي أناقتنا الفاخرة" : "Découvrez notre sélection exclusive"}
+                                            اكتشفي أناقتنا الفاخرة
                                         </p>
                                     </div>
-                                    <Link href={`/${locale}/shop`} onClick={closeCart}
+                                    <Link href="/shop" onClick={closeCart}
                                         className="border border-[#C9A96E] text-[#C9A96E] text-[10px] tracking-[0.3em] uppercase px-10 py-3.5 hover:bg-[#C9A96E] hover:text-white transition-all duration-300">
                                         {T.browse}
                                     </Link>
@@ -156,7 +148,7 @@ export function CartDrawer({ locale }: { locale: string }) {
                                                 {/* Image — large and prominent */}
                                                 <div className="relative w-28 h-36 bg-[#F5EDE0] shrink-0 overflow-hidden group">
                                                     {item.image ? (
-                                                        <Image src={item.image} alt={locName(item, locale)} fill
+                                                        <Image src={item.image} alt={item.nameAr} fill
                                                             className="object-cover group-hover:scale-110 transition-transform duration-700" />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center">
@@ -170,10 +162,10 @@ export function CartDrawer({ locale }: { locale: string }) {
                                                 {/* Details */}
                                                 <div className="flex-1 flex flex-col min-w-0 py-1">
                                                     <div className="flex items-start justify-between gap-2 mb-1">
-                                                        <Link href={`/${locale}/products/${item.productSlug}`} onClick={closeCart}
+                                                        <Link href={`/products/${item.productSlug}`} onClick={closeCart}
                                                             className="text-base text-[#1A1A2E] hover:text-[#C9A96E] transition-colors line-clamp-2 leading-snug"
                                                             style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-                                                            {locName(item, locale)}
+                                                            {item.nameAr}
                                                         </Link>
                                                         <button onClick={() => removeItem(item.variantId)}
                                                             className="shrink-0 mt-0.5 w-6 h-6 flex items-center justify-center text-[#1A1A2E]/20 hover:text-red-400 hover:bg-red-50 rounded-sm transition-all">
@@ -259,7 +251,7 @@ export function CartDrawer({ locale }: { locale: string }) {
                                     </div>
 
                                     {/* ── Place Order CTA ── */}
-                                    <Link href={`/${locale}/checkout?method=delivery`} onClick={closeCart}
+                                    <Link href="/checkout?method=delivery" onClick={closeCart}
                                         className="group w-full flex items-center justify-between bg-[#1A1A2E] text-white px-8 py-5 hover:bg-[#C9A96E] transition-all duration-500 mb-4">
                                         <span className="text-[11px] tracking-[0.35em] uppercase font-medium">{T.order}</span>
                                         <div className="w-8 h-8 border border-white/30 group-hover:border-white/60 flex items-center justify-center group-hover:translate-x-1 transition-all">

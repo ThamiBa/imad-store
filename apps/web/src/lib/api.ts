@@ -5,10 +5,10 @@ const api = axios.create({
     headers: { "Content-Type": "application/json" },
 });
 
-// Attach token if present
+// Attach admin token from localStorage if present (only used by /admin pages)
 api.interceptors.request.use((config) => {
     if (typeof window !== "undefined") {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("adminToken");
         if (token) config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -60,22 +60,23 @@ export interface ProductsResponse {
     totalPages: number;
 }
 
-export interface OrderPayload {
-    guestEmail?: string;
-    guestPhone?: string;
-    address: {
+// Guest-only checkout — no user account required
+export interface GuestCheckoutPayload {
+    paymentMethod: "COD";
+    customer: {
         fullName: string;
         phone: string;
+        email?: string;
         street: string;
         city: string;
         region: string;
+        postalCode?: string;
     };
-    paymentMethod: "COD" | "STRIPE";
-    items: { variantId: string; quantity: number }[];
+    items: { productId: string; variantId: string; quantity: number }[];
     notes?: string;
 }
 
-// ─── API Functions ────────────────────────────────────────────────────────────
+// ─── Products / Categories (public) ───────────────────────────────────────────
 
 export const getProducts = async (params?: {
     category?: string;
@@ -98,30 +99,87 @@ export const getCategories = async (): Promise<Category[]> => {
     return data.data;
 };
 
-export const createOrder = async (payload: OrderPayload) => {
+// ─── Guest Checkout (no auth) ─────────────────────────────────────────────────
+
+export const createOrder = async (payload: GuestCheckoutPayload) => {
     const { data } = await api.post("/orders", payload);
     return data.data;
 };
 
-export interface AuthResponse {
-    success: boolean;
-    data: {
-        accessToken: string;
-        refreshToken: string;
-    };
+export const trackOrder = async (orderId: string) => {
+    const { data } = await api.get(`/orders/${orderId}`);
+    return data.data;
+};
+
+// ─── Settings (public) ────────────────────────────────────────────────────────
+
+export interface StoreSettings {
+    id: string;
+    whatsappPhone: string;
+    shippingCost: number;
+    freeShippingMin: number;
+    codEnabled: boolean;
 }
 
-interface LoginPayload { email: string; password: string; }
-interface RegisterPayload { email: string; password: string; name?: string; }
+export const getSettings = async (): Promise<StoreSettings> => {
+    const { data } = await api.get("/settings");
+    return data.data;
+};
 
-export const loginUser = async (payload: LoginPayload): Promise<AuthResponse> => {
-    const { data } = await api.post("/auth/login", payload);
+// ─── Admin (auth required — kept for /admin pages) ───────────────────────────
+
+export interface AdminAuthResponse {
+    success: boolean;
+    data: { accessToken: string; refreshToken: string };
+}
+
+export const adminLogin = async (email: string, password: string): Promise<AdminAuthResponse> => {
+    const { data } = await api.post("/auth/login", { email, password });
     return data;
 };
 
-export const registerUser = async (payload: RegisterPayload): Promise<AuthResponse> => {
-    const { data } = await api.post("/auth/register", payload);
+export interface AdminNotification {
+    id: string;
+    type: string;
+    title: string;
+    message: string;
+    orderId?: string;
+    read: boolean;
+    createdAt: string;
+}
+
+export const getAdminNotifications = async (): Promise<{
+    data: AdminNotification[];
+    unread: number;
+}> => {
+    const { data } = await api.get("/notifications");
     return data;
+};
+
+export const markNotificationRead = async (id: string) => {
+    await api.patch(`/notifications/${id}/read`);
+};
+
+export const markAllNotificationsRead = async () => {
+    await api.post("/notifications/read-all");
+};
+
+export interface AdminOrder {
+    id: string;
+    customerName: string | null;
+    customerPhone: string | null;
+    city: string | null;
+    region: string | null;
+    status: string;
+    paymentMethod: string;
+    paymentStatus: string;
+    totalAmount: number;
+    createdAt: string;
+}
+
+export const getAllOrders = async (params?: { status?: string; page?: number; limit?: number }) => {
+    const { data } = await api.get("/orders", { params });
+    return data as { success: boolean; data: AdminOrder[]; total: number; page: number; totalPages: number };
 };
 
 export default api;

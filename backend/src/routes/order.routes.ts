@@ -1,20 +1,27 @@
 import { Router, IRouter } from "express";
 import {
     createOrder,
-    getMyOrders,
     getOrder,
-    getAllOrders,
+    listOrders,
     updateOrderStatus,
+    getAdminNotifications,
+    markNotificationRead,
+    markAllNotificationsRead,
 } from "../controllers/order.controller";
 import { authenticate, requireAdmin } from "../middleware/auth.middleware";
 
 export const orderRoutes: IRouter = Router();
 
-// Customer
-orderRoutes.post("/", createOrder);                              // guest or logged-in
-orderRoutes.get("/my", authenticate, getMyOrders);              // logged-in customer orders
-orderRoutes.get("/:id", getOrder);                              // order by ID (guest or user)
+// ─── Public (guest checkout — no auth required) ────────────────────────────
+orderRoutes.post("/", createOrder);                              // guest checkout
+orderRoutes.get("/:id", getOrder);                              // order tracking by ID
 
-// Admin
-orderRoutes.get("/", authenticate, requireAdmin, getAllOrders);
+// ─── Admin ────────────────────────────────────────────────────────────────
+orderRoutes.get("/", authenticate, requireAdmin, listOrders);
 orderRoutes.patch("/:id/status", authenticate, requireAdmin, updateOrderStatus);
+
+// Admin notifications (polled by dashboard every 5–10s)
+export const notificationRoutes: IRouter = Router();
+notificationRoutes.get("/", authenticate, requireAdmin, getAdminNotifications);
+notificationRoutes.patch("/:id/read", authenticate, requireAdmin, markNotificationRead);
+notificationRoutes.post("/read-all", authenticate, requireAdmin, markAllNotificationsRead);

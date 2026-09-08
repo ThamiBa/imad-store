@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { useCartStore } from "@/store/cart.store";
 
-/* Only Arabic is supported */
+/* Arabic-only */
 
 const NAV_LINKS = [
     { href: "/", labelAr: "الرئيسية" },
@@ -21,7 +21,7 @@ const NAV_LINKS = [
 
 const DELIVERY_MSG = "📦 توصيل لجميع أنحاء المغرب • الدفع عند الاستلام 📦";
 
-export function Navbar({ locale }: { locale: string }) {
+export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -55,8 +55,7 @@ export function Navbar({ locale }: { locale: string }) {
                     className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between gap-4"
                     style={{ paddingTop: scrolled ? 10 : 16, paddingBottom: scrolled ? 10 : 16, transition: "padding 0.3s" }}
                 >
-                    {/* Logo */}
-                    <Link href={`/${locale}`} className="flex flex-col leading-none shrink-0 group">
+                    <Link href="/" className="flex flex-col leading-none shrink-0 group">
                         <span
                             className="text-[26px] md:text-[30px] font-light tracking-[0.15em] text-[#1A1A2E] group-hover:text-[#C9A96E] transition-colors"
                             style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -68,7 +67,6 @@ export function Navbar({ locale }: { locale: string }) {
                         </span>
                     </Link>
 
-                    {/* Delivery ticker — center */}
                     <div className="flex-1 overflow-hidden flex items-center justify-center h-7" dir="ltr">
                         <motion.p
                             key="ticker"
@@ -81,7 +79,6 @@ export function Navbar({ locale }: { locale: string }) {
                         </motion.p>
                     </div>
 
-                    {/* Cart + hamburger */}
                     <div className="flex items-center gap-3 shrink-0">
                         <button onClick={openCart} className="relative flex items-center text-[#1A1A2E] hover:text-[#C9A96E] transition-colors p-2">
                             <ShoppingBag size={28} strokeWidth={1.5} />
@@ -105,13 +102,12 @@ export function Navbar({ locale }: { locale: string }) {
                     </div>
                 </div>
 
-                {/* ── Collections strip (desktop only) ─────────────── */}
                 <div className="hidden lg:block border-t border-[#C9A96E]/10">
                     <nav className="max-w-7xl mx-auto px-6 flex items-center justify-center gap-8 py-3" dir="rtl">
                         {NAV_LINKS.map((link) => (
                             <Link
                                 key={link.href}
-                                href={`/${locale}${link.href}`}
+                                href={link.href}
                                 className="relative text-[14px] tracking-[0.1em] font-semibold text-[#1A1A2E]/80 hover:text-[#C9A96E] transition-colors duration-200 group whitespace-nowrap"
                             >
                                 {link.labelAr}
@@ -122,7 +118,6 @@ export function Navbar({ locale }: { locale: string }) {
                 </div>
             </motion.header>
 
-            {/* ═══════════════════════ MOBILE DRAWER ═══════════════════════ */}
             <AnimatePresence>
                 {mobileOpen && (
                     <>
@@ -140,7 +135,6 @@ export function Navbar({ locale }: { locale: string }) {
                             style={{ position: "fixed", top: 0, bottom: 0, zIndex: 91, width: 300, left: 0 }}
                             className="bg-[#FDFAF6] flex flex-col shadow-2xl"
                         >
-                            {/* Drawer header */}
                             <div className="bg-[#1A1A2E] px-6 py-5 flex items-center justify-between shrink-0">
                                 <span className="text-xl font-light text-white tracking-[0.2em]"
                                     style={{ fontFamily: "'Cormorant Garamond', serif" }}>
@@ -154,7 +148,6 @@ export function Navbar({ locale }: { locale: string }) {
                                 </button>
                             </div>
 
-                            {/* Mobile links */}
                             <nav className="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-0" dir="rtl">
                                 {NAV_LINKS.map((link, i) => (
                                     <motion.div
@@ -164,7 +157,7 @@ export function Navbar({ locale }: { locale: string }) {
                                         transition={{ delay: 0.04 * i }}
                                     >
                                         <Link
-                                            href={`/${locale}${link.href}`}
+                                            href={link.href}
                                             onClick={() => setMobileOpen(false)}
                                             className="flex items-center justify-between py-4 border-b border-[#C9A96E]/10 text-[17px] tracking-[0.05em] font-semibold text-[#1A1A2E]/80 hover:text-[#C9A96E] transition-colors group"
                                         >
