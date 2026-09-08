@@ -25,7 +25,7 @@ export function Footer() {
             </div>
 
             {/* ── Main footer body ── */}
-            <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24 grid grid-cols-1 md:grid-cols-3 gap-16">
+            <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24 grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-right">
 
                 {/* ── Col 1: Logo ── */}
                 <div className="flex flex-col items-start gap-6">
