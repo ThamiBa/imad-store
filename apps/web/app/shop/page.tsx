@@ -25,28 +25,22 @@ interface ShopProduct {
 
 /* ── Mock data ─────────────────────────────────────────────── */
 const ALL_PRODUCTS: ShopProduct[] = [
-    { id: "1", slug: "abaya-soie-ivoire", nameFr: "Abaya Royale", nameAr: "عباية ملكية", nameEn: "Royal Abaya", price: 890, compareAt: 1200, category: "abayas", img1: "/images/hero-1.png", img2: "/images/cat-abayas.png", colors: [{ hex: "#F5EDE0", label: "كريم" }, { hex: "#1A1A2E", label: "كحلي" }, { hex: "#C9A96E", label: "ذهبي" }] },
-    { id: "2", slug: "abaya-brodee-or", nameFr: "Abaya Brodée Or", nameAr: "عباية مطرزة ذهب", nameEn: "Gold Embroidered Abaya", price: 1290, compareAt: 1600, category: "abayas", img1: "/images/cat-abayas.png", img2: "/images/hero-2.png", colors: [{ hex: "#C9A96E", label: "ذهب" }, { hex: "#F5EDE0", label: "كريم" }] },
-    { id: "3", slug: "shailan-premium", nameFr: "Shailan Premium", nameAr: "شيلان فاخر", nameEn: "Premium Shailan", price: 650, compareAt: 850, category: "shailan", img1: "/images/hero-2.png", img2: "/images/hero-1.png", colors: [{ hex: "#1A1A2E", label: "كحلي" }, { hex: "#C9A96E", label: "ذهب" }] },
-    { id: "4", slug: "shailan-soie", nameFr: "Shailan Soie", nameAr: "شيلان حرير", nameEn: "Silk Shailan", price: 490, compareAt: null, category: "shailan", img1: "/images/cat-abayas.png", img2: "/images/hero-2.png", colors: [{ hex: "#F5EDE0", label: "كريم" }, { hex: "#FFFFFF", label: "أبيض" }] },
-    { id: "5", slug: "saikan-classique", nameFr: "Saïkan Classique", nameAr: "صيكان كلاسيك", nameEn: "Classic Saikan", price: 750, compareAt: 950, category: "saikan", img1: "/images/cat-abayas.png", img2: "/images/hero-1.png", colors: [{ hex: "#1A1A2E", label: "كحلي" }, { hex: "#C9A96E", label: "ذهب" }] },
-    { id: "6", slug: "saikan-dore", nameFr: "Saïkan Doré", nameAr: "صيكان ذهبي", nameEn: "Gold Saikan", price: 920, compareAt: null, category: "saikan", img1: "/images/cat-abayas.png", img2: "/images/hero-2.png", colors: [{ hex: "#C9A96E", label: "ذهب" }, { hex: "#F5EDE0", label: "كريم" }] },
-    { id: "7", slug: "chaussures-femme-sport", nameFr: "Chaussures Femme Sport", nameAr: "أحذية رياضية", nameEn: "Sports Women Shoes", price: 420, compareAt: 600, category: "shoes-women", img1: "/images/cat-shoes.png", img2: "/images/hero-1.png", colors: [{ hex: "#FFFFFF", label: "أبيض" }, { hex: "#1A1A2E", label: "كحلي" }] },
-    { id: "8", slug: "chaussures-femme-classic", nameFr: "Chaussures Femme Classiques", nameAr: "أحذية كلاسيكية", nameEn: "Classic Women Shoes", price: 560, compareAt: 780, category: "shoes-women", img1: "/images/cat-shoes.png", img2: "/images/hero-2.png", colors: [{ hex: "#FFFFFF", label: "أبيض" }, { hex: "#C9A96E", label: "ذهبي" }] },
-    { id: "9", slug: "pyjama-luxe", nameFr: "Pyjama Luxe", nameAr: "بيجامة فاخرة", nameEn: "Luxury Pyjama", price: 380, compareAt: 520, category: "pyjamas", img1: "/images/hero-1.png", img2: "/images/cat-abayas.png", colors: [{ hex: "#F5EDE0", label: "كريم" }, { hex: "#C9A96E", label: "ذهب" }] },
-    { id: "10", slug: "pyjama-satin", nameFr: "Pyjama Satin", nameAr: "بيجامة ساتان", nameEn: "Satin Pyjama", price: 450, compareAt: null, category: "pyjamas", img1: "/images/hero-2.png", img2: "/images/hero-1.png", colors: [{ hex: "#1A1A2E", label: "كحلي" }, { hex: "#F5EDE0", label: "كريم" }] },
-    { id: "11", slug: "sabo-cuir", nameFr: "Sabo Cuir Homme", nameAr: "صابو جلد رجالي", nameEn: "Men Leather Sabo", price: 350, compareAt: 490, category: "shoes-men", img1: "/images/cat-shoes.png", img2: "/images/hero-2.png", colors: [{ hex: "#1A1A2E", label: "كحلي" }, { hex: "#C9A96E", label: "ذهب" }] },
-    { id: "12", slug: "sabo-velours", nameFr: "Sabo Velours Homme", nameAr: "صابو مخمل رجالي", nameEn: "Men Velvet Sabo", price: 290, compareAt: null, category: "shoes-men", img1: "/images/cat-shoes.png", img2: "/images/hero-2.png", colors: [{ hex: "#1A1A2E", label: "كحلي" }, { hex: "#F5EDE0", label: "كريم" }] },
+    { id: "sac-cuir-luxe", slug: "sac-cuir-luxe", nameFr: "Sac en Cuir Luxe", nameAr: "حقيبة جلدية فاخرة", nameEn: "Luxury Leather Bag", price: 1200, compareAt: 1500, category: "bags", img1: "/images/cat-abayas.png", img2: "/images/hero-1.png", colors: [{ hex: "#000000", label: "أسود" }, { hex: "#C9A96E", label: "ذهب" }] },
+    { id: "abaya-velours", slug: "abaya-velours", nameFr: "Abaya Velours Royal", nameAr: "عباية مخملية ملكية", nameEn: "Royal Velvet Abaya", price: 850, compareAt: 1100, category: "abayas", img1: "/images/cat-abayas.png", img2: "/images/hero-2.png", colors: [{ hex: "#800020", label: "عنابي" }] },
+    { id: "chale-soie", slug: "chale-soie", nameFr: "Châle en Soie", nameAr: "شال حريري", nameEn: "Silk Shawl", price: 350, compareAt: null, category: "shailan", img1: "/images/hero-2.png", img2: "/images/hero-1.png", colors: [{ hex: "#F5F5DC", label: "بيج" }] },
+    { id: "talons-hauts-or", slug: "talons-hauts-or", nameFr: "Talons Hauts Or", nameAr: "حذاء كعب عالي ذهبي", nameEn: "Gold High Heels", price: 590, compareAt: 750, category: "shoes-women", img1: "/images/cat-shoes.png", img2: "/images/hero-1.png", colors: [{ hex: "#FFD700", label: "ذهبي" }] },
+    { id: "pyjama-soie", slug: "pyjama-soie", nameFr: "Pyjama en Soie", nameAr: "بيجامة حريرية", nameEn: "Silk Pajamas", price: 450, compareAt: 600, category: "pyjamas", img1: "/images/hero-1.png", img2: "/images/cat-abayas.png", colors: [{ hex: "#000080", label: "أزرق" }] },
+    { id: "sabots-classiques", slug: "sabots-classiques", nameFr: "Sabots Classiques Homme", nameAr: "سابو رجالي كلاسيك", nameEn: "Classic Men's Sabots", price: 320, compareAt: 450, category: "shoes-men", img1: "/images/cat-shoes.png", img2: "/images/hero-2.png", colors: [{ hex: "#8B4513", label: "بني" }] },
 ];
 
 const CATEGORIES = [
     { slug: "all", labelAr: "الكل" },
-    { slug: "saikan", labelAr: "صيكان" },
+    { slug: "bags", labelAr: "الحقائب" },
     { slug: "abayas", labelAr: "العبايات" },
     { slug: "shailan", labelAr: "شيلان" },
     { slug: "shoes-women", labelAr: "أحذية نسائية" },
     { slug: "pyjamas", labelAr: "بيجامات" },
-    { slug: "shoes-men", labelAr: "صابو رجالي" },
+    { slug: "shoes-men", labelAr: "سابو رجالي" },
 ];
 
 function ShopContent() {

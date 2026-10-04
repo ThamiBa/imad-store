@@ -12,6 +12,10 @@ const intentSchema = z.object({
 });
 
 export async function createPaymentIntent(req: Request, res: Response) {
+    if (!stripe) {
+        throw new AppError("Stripe is not configured. Please set STRIPE_SECRET_KEY in environment variables.", 500);
+    }
+
     const body = intentSchema.parse(req.body);
 
     const paymentIntent = await stripe.paymentIntents.create({
@@ -28,6 +32,13 @@ export async function createPaymentIntent(req: Request, res: Response) {
 }
 
 export async function handleWebhook(req: Request, res: Response) {
+    if (!stripe) {
+        // If stripe is not configured, we can still receive webhooks but won't be able to process them
+        // For now, we'll just acknowledge receipt to prevent webhook retries
+        console.warn("Stripe is not configured but received webhook - acknowledging receipt");
+        return res.json({ received: true });
+    }
+
     const sig = req.headers["stripe-signature"];
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 

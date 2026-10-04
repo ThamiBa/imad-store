@@ -164,7 +164,8 @@ export async function bridgeOrderToAdmin(
     const { locale = "fr", acknowledgeCustomer = true } = options;
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
-    const adminChatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
+    // Support both TELEGRAM_ADMIN_CHAT_ID (preferred) and legacy TELEGRAM_CHAT_ID
+    const adminChatId = process.env.TELEGRAM_ADMIN_CHAT_ID ?? process.env.TELEGRAM_CHAT_ID;
 
     // ── 1. Admin notification via Telegram ────────────────────────────────
     let adminSent = false;

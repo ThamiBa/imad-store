@@ -182,4 +182,50 @@ export const getAllOrders = async (params?: { status?: string; page?: number; li
     return data as { success: boolean; data: AdminOrder[]; total: number; page: number; totalPages: number };
 };
 
+export const updateOrderStatus = async (id: string, status: string) => {
+    const { data } = await api.patch(`/orders/${id}/status`, { status });
+    return data;
+};
+
+// ─── Admin Product CRUD ───────────────────────────────────────────────────────
+
+export const createProduct = async (payload: Record<string, unknown>) => {
+    const { data } = await api.post("/products", payload);
+    return data;
+};
+
+export const updateProduct = async (id: string, payload: Record<string, unknown>) => {
+    const { data } = await api.put(`/products/${id}`, payload);
+    return data;
+};
+
+export const deleteProduct = async (id: string) => {
+    const { data } = await api.delete(`/products/${id}`);
+    return data;
+};
+
+// ─── Admin Category CRUD ───────────────────────────────────────────────────────
+
+export const createCategory = async (payload: Record<string, unknown>) => {
+    const { data } = await api.post("/categories", payload);
+    return data;
+};
+
+export const updateCategory = async (id: string, payload: Record<string, unknown>) => {
+    const { data } = await api.put(`/categories/${id}`, payload);
+    return data;
+};
+
+export const deleteCategory = async (id: string) => {
+    const { data } = await api.delete(`/categories/${id}`);
+    return data;
+};
+
+// ─── Admin Settings Update ────────────────────────────────────────────────────
+
+export const updateSettings = async (payload: Partial<StoreSettings>) => {
+    const { data } = await api.put("/settings", payload);
+    return data;
+};
+
 export default api;

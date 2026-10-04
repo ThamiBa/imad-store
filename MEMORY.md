@@ -1,0 +1,1 @@
+- [Admin login page fixed - posts to /api/auth/login and stores token in localStorage](apps/web/app/admin/page.tsx.md) — Fixed template literal syntax, JSX bracket mismatches, and conditional rendering to enable proper admin authentication flow.

@@ -17,7 +17,6 @@ async function main() {
             shippingCost: 30,
             freeShippingMin: 500,
             codEnabled: true,
-            stripeEnabled: true,
         },
     });
     console.log("✅ Store settings seeded");
@@ -38,96 +37,146 @@ async function main() {
     console.log("✅ Admin user seeded → admin@imad-store.ma / Admin123!");
 
     // ─── Categories ──────────────────────────────────────────────────────────
-    const hijab = await prisma.category.upsert({
-        where: { slug: "hijab" },
+    const bags = await prisma.category.upsert({
+        where: { slug: "bags" },
         update: {},
-        create: { slug: "hijab", nameFr: "Hijab", nameAr: "حجاب", nameEn: "Hijab" },
+        create: { slug: "bags", nameFr: "Sacs", nameAr: "الحقائب", nameEn: "Bags" },
     });
-    const niqab = await prisma.category.upsert({
-        where: { slug: "niqab" },
+    const abayas = await prisma.category.upsert({
+        where: { slug: "abayas" },
         update: {},
-        create: { slug: "niqab", nameFr: "Niqab", nameAr: "نقاب", nameEn: "Niqab" },
+        create: { slug: "abayas", nameFr: "Abayas", nameAr: "العبايات", nameEn: "Abayas" },
     });
-    const abaya = await prisma.category.upsert({
-        where: { slug: "abaya" },
+    const shailan = await prisma.category.upsert({
+        where: { slug: "shailan" },
         update: {},
-        create: { slug: "abaya", nameFr: "Abaya", nameAr: "عباءة", nameEn: "Abaya" },
+        create: { slug: "shailan", nameFr: "Châles", nameAr: "شيلان", nameEn: "Shawls" },
     });
-    await prisma.category.upsert({
-        where: { slug: "accessoires" },
+    const shoesWomen = await prisma.category.upsert({
+        where: { slug: "shoes-women" },
         update: {},
-        create: { slug: "accessoires", nameFr: "Accessoires", nameAr: "إكسسوارات", nameEn: "Accessories" },
+        create: { slug: "shoes-women", nameFr: "Chaussures Femmes", nameAr: "أحذية نسائية", nameEn: "Women's Shoes" },
     });
-    const shoes = await prisma.category.upsert({
-        where: { slug: "shoes" },
+    const pyjamas = await prisma.category.upsert({
+        where: { slug: "pyjamas" },
         update: {},
-        create: { slug: "shoes", nameFr: "Souliers", nameAr: "أحذية", nameEn: "Shoes" },
+        create: { slug: "pyjamas", nameFr: "Pyjamas", nameAr: "بيجامات", nameEn: "Pajamas" },
     });
-    console.log("✅ 5 categories seeded");
+    const shoesMen = await prisma.category.upsert({
+        where: { slug: "shoes-men" },
+        update: {},
+        create: { slug: "shoes-men", nameFr: "Sabots Hommes", nameAr: "سابو رجالي", nameEn: "Men's Sabots" },
+    });
+    console.log("✅ 6 categories seeded");
+
+    // ─── Delete Existing Products & Variants ──────────────────────────────────
+    console.log("🧹 Clearing old orders, products and variants...");
+    await prisma.orderItem.deleteMany({});
+    await prisma.order.deleteMany({});
+    await prisma.productVariant.deleteMany({});
+    await prisma.product.deleteMany({});
 
     // ─── Sample Products ─────────────────────────────────────────────────────
     const products = [
         {
-            slug: "hijab-soie-noir",
-            nameFr: "Hijab en Soie — Noir",
-            nameAr: "حجاب حرير — أسود",
-            nameEn: "Silk Hijab — Black",
-            descriptionFr: "Un hijab en soie naturelle d'une douceur incomparable. Coupe élégante, tombé parfait.",
-            descriptionAr: "حجاب من الحرير الطبيعي بنعومة لا مثيل لها. قطع أنيقة بسقوط مثالي.",
-            descriptionEn: "A natural silk hijab with unmatched softness. Elegant cut, perfect drape.",
-            price: 249,
-            categoryId: hijab.id,
-            images: ["https://placehold.co/600x400?text=Hijab+Soie+Noir"],
+            slug: "sac-cuir-luxe",
+            nameFr: "Sac en Cuir Luxe",
+            nameAr: "حقيبة جلدية فاخرة",
+            nameEn: "Luxury Leather Bag",
+            descriptionFr: "Un sac en cuir véritable avec des finitions dorées.",
+            descriptionAr: "حقيبة من الجلد الطبيعي مع لمسات ذهبية.",
+            descriptionEn: "A genuine leather bag with gold finishes.",
+            price: 1200,
+            categoryId: bags.id,
+            images: ["https://placehold.co/600x400?text=Luxury+Bag"],
             variants: [
-                { color: "#000000", colorNameFr: "Noir", colorNameAr: "أسود", colorNameEn: "Black", stock: 50, sku: "HIJ-SOI-BLK-OS" },
-                { color: "#F5F5DC", colorNameFr: "Beige", colorNameAr: "بيج", colorNameEn: "Beige", stock: 30, sku: "HIJ-SOI-BEI-OS" },
+                { color: "#000000", colorNameFr: "Noir", colorNameAr: "أسود", colorNameEn: "Black", stock: 15, sku: "BAG-BLK" },
             ],
         },
         {
-            slug: "abaya-dubai-luxe",
-            nameFr: "Abaya Dubaï Luxe",
-            nameAr: "عباءة دبي الفاخرة",
-            nameEn: "Dubai Luxury Abaya",
-            descriptionFr: "Abaya inspirée des créations de Dubaï, avec broderies dorées subtiles.",
-            descriptionAr: "عباءة مستوحاة من تصاميم دبي مع تطريز ذهبي رفيع.",
-            descriptionEn: "Abaya inspired by Dubai designs with subtle gold embroidery.",
-            price: 699,
-            compareAtPrice: 899,
-            categoryId: abaya.id,
-            images: ["https://placehold.co/600x400?text=Abaya+Dubai"],
+            slug: "abaya-velours",
+            nameFr: "Abaya Velours Royal",
+            nameAr: "عباية مخملية ملكية",
+            nameEn: "Royal Velvet Abaya",
+            descriptionFr: "Abaya en velours doux, parfaite pour les soirées.",
+            descriptionAr: "عباية من المخمل الناعم، مثالية للسهرات.",
+            descriptionEn: "Soft velvet abaya, perfect for evenings.",
+            price: 850,
+            compareAtPrice: 1100,
+            categoryId: abayas.id,
+            images: ["https://placehold.co/600x400?text=Velvet+Abaya"],
             variants: [
-                { color: "#000000", colorNameFr: "Noir", colorNameAr: "أسود", colorNameEn: "Black", size: "S", stock: 10, sku: "ABA-DUB-BLK-S" },
-                { color: "#000000", colorNameFr: "Noir", colorNameAr: "أسود", colorNameEn: "Black", size: "M", stock: 15, sku: "ABA-DUB-BLK-M" },
-                { color: "#000000", colorNameFr: "Noir", colorNameAr: "أسود", colorNameEn: "Black", size: "L", stock: 10, sku: "ABA-DUB-BLK-L" },
+                { color: "#800020", colorNameFr: "Bordeaux", colorNameAr: "عنابي", colorNameEn: "Burgundy", size: "M", stock: 20, sku: "ABA-VEL-BUR-M" },
             ],
         },
         {
-            slug: "niqab-premium-jersey",
-            nameFr: "Niqab Premium Jersey",
-            nameAr: "نقاب جيرسي الفاخر",
-            nameEn: "Premium Jersey Niqab",
-            descriptionFr: "Niqab en jersey premium, léger et respirant, maintien parfait toute la journée.",
-            descriptionAr: "نقاب جيرسي فاخر خفيف وقابل للتنفس مع ثبات مثالي طوال اليوم.",
-            descriptionEn: "Premium jersey niqab, light and breathable, perfect hold all day.",
-            price: 129,
-            categoryId: niqab.id,
-            images: ["https://placehold.co/600x400?text=Niqab+Jersey"],
+            slug: "chale-soie",
+            nameFr: "Châle en Soie",
+            nameAr: "شال حريري",
+            nameEn: "Silk Shawl",
+            descriptionFr: "Châle léger et élégant en soie naturelle.",
+            descriptionAr: "شال خفيف وأنيق من الحرير الطبيعي.",
+            descriptionEn: "Light and elegant natural silk shawl.",
+            price: 350,
+            categoryId: shailan.id,
+            images: ["https://placehold.co/600x400?text=Silk+Shawl"],
             variants: [
-                { color: "#000000", colorNameFr: "Noir", colorNameAr: "أسود", colorNameEn: "Black", stock: 100, sku: "NIQ-JER-BLK-OS" },
-                { color: "#8B4513", colorNameFr: "Marron", colorNameAr: "بني", colorNameEn: "Brown", stock: 40, sku: "NIQ-JER-BRN-OS" },
+                { color: "#F5F5DC", colorNameFr: "Beige", colorNameAr: "بيج", colorNameEn: "Beige", stock: 50, sku: "SHA-BEI" },
+            ],
+        },
+        {
+            slug: "talons-hauts-or",
+            nameFr: "Talons Hauts Or",
+            nameAr: "حذاء كعب عالي ذهبي",
+            nameEn: "Gold High Heels",
+            descriptionFr: "Chaussures élégantes pour femmes avec détails dorés.",
+            descriptionAr: "أحذية أنيقة للنساء مع تفاصيل ذهبية.",
+            descriptionEn: "Elegant women's shoes with gold details.",
+            price: 590,
+            categoryId: shoesWomen.id,
+            images: ["https://placehold.co/600x400?text=Gold+Heels"],
+            variants: [
+                { color: "#FFD700", colorNameFr: "Or", colorNameAr: "ذهبي", colorNameEn: "Gold", size: "38", stock: 10, sku: "SHO-WOM-GLD-38" },
+            ],
+        },
+        {
+            slug: "pyjama-soie",
+            nameFr: "Pyjama en Soie",
+            nameAr: "بيجامة حريرية",
+            nameEn: "Silk Pajamas",
+            descriptionFr: "Ensemble pyjama confortable et luxueux.",
+            descriptionAr: "طقم بيجامة مريح وفاخر.",
+            descriptionEn: "Comfortable and luxurious pajama set.",
+            price: 450,
+            categoryId: pyjamas.id,
+            images: ["https://placehold.co/600x400?text=Silk+Pajamas"],
+            variants: [
+                { color: "#000080", colorNameFr: "Bleu Nuit", colorNameAr: "أزرق ليلي", colorNameEn: "Navy Blue", size: "L", stock: 25, sku: "PYJ-NAV-L" },
+            ],
+        },
+        {
+            slug: "sabots-classiques",
+            nameFr: "Sabots Classiques Homme",
+            nameAr: "سابو رجالي كلاسيك",
+            nameEn: "Classic Men's Sabots",
+            descriptionFr: "Sabots traditionnels confortables pour hommes.",
+            descriptionAr: "سابو تقليدي مريح للرجال.",
+            descriptionEn: "Comfortable traditional men's sabots.",
+            price: 320,
+            categoryId: shoesMen.id,
+            images: ["https://placehold.co/600x400?text=Mens+Sabots"],
+            variants: [
+                { color: "#8B4513", colorNameFr: "Marron", colorNameAr: "بني", colorNameEn: "Brown", size: "42", stock: 30, sku: "SHO-MEN-BRN-42" },
             ],
         },
     ];
 
     for (const { variants, ...productData } of products) {
-        const existing = await prisma.product.findUnique({ where: { slug: productData.slug } });
-        if (!existing) {
-            await prisma.product.create({
-                data: { ...productData, status: "ACTIVE", variants: { create: variants } },
-            });
-        }
+        await prisma.product.create({
+            data: { ...productData, status: "ACTIVE", variants: { create: variants } },
+        });
     }
-    console.log("✅ 3 sample products seeded");
+    console.log("✅ 6 sample products seeded");
     console.log("\n🎉 Seed complete!");
 }
 

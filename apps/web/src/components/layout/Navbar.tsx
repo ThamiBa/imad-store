@@ -11,12 +11,12 @@ import { useCartStore } from "@/store/cart.store";
 const NAV_LINKS = [
     { href: "/", labelAr: "الرئيسية" },
     { href: "/shop", labelAr: "المتجر" },
-    { href: "/shop?category=saikan", labelAr: "صيكان" },
+    { href: "/shop?category=bags", labelAr: "الحقائب" },
     { href: "/shop?category=abayas", labelAr: "العبايات" },
     { href: "/shop?category=shailan", labelAr: "شيلان" },
     { href: "/shop?category=shoes-women", labelAr: "أحذية نسائية" },
     { href: "/shop?category=pyjamas", labelAr: "بيجامات" },
-    { href: "/shop?category=shoes-men", labelAr: "صابو رجالي" },
+    { href: "/shop?category=shoes-men", labelAr: "سابو رجالي" },
 ];
 
 const DELIVERY_MSG = "📦 توصيل لجميع أنحاء المغرب • الدفع عند الاستلام 📦";

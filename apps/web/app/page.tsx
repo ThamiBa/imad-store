@@ -45,23 +45,24 @@ const HERO_SLIDES = [
 ];
 
 const CATEGORIES = [
-    { slug: "saikan", img: "/images/cat-abayas.png", labelAr: "صيكان" },
+    { slug: "bags", img: "/images/cat-abayas.png", labelAr: "الحقائب" },
     { slug: "abayas", img: "/images/cat-abayas.png", labelAr: "العبايات" },
     { slug: "shailan", img: "/images/hero-1.png", labelAr: "شيلان" },
     { slug: "shoes-women", img: "/images/cat-shoes.png", labelAr: "أحذية نسائية" },
-    { slug: "shoes-men", img: "/images/cat-shoes.png", labelAr: "صابو رجالي" },
+    { slug: "pyjamas", img: "/images/hero-2.png", labelAr: "بيجامات" },
+    { slug: "shoes-men", img: "/images/cat-shoes.png", labelAr: "سابو رجالي" },
 ];
 
 const FEATURED_PRODUCTS = [
-    { id: 1, slug: "abaya-soie-ivoire", nameAr: "عباءة ملكية عاجي", price: 890, compareAt: 1200, img1: "/images/hero-1.png", img2: "/images/cat-abayas.png", colors: ["#F5EDE0", "#1A1A2E"] },
-    { id: 2, slug: "souliers-cuir-or", nameAr: "حذاء جلد ذهبي", price: 560, compareAt: 780, img1: "/images/cat-shoes.png", img2: "/images/hero-1.png", colors: ["#C9A96E", "#F5EDE0"] },
-    { id: 3, slug: "abaya-brodee-or", nameAr: "عباءة مطرزة بالذهب", price: 1290, compareAt: 1600, img1: "/images/cat-abayas.png", img2: "/images/hero-2.png", colors: ["#C9A96E", "#F5EDE0"] },
+    { id: 1, slug: "sac-cuir-luxe", nameAr: "حقيبة جلدية فاخرة", price: 1200, compareAt: 1500, img1: "/images/hero-1.png", img2: "/images/cat-abayas.png", colors: ["#F5EDE0", "#1A1A2E"] },
+    { id: 2, slug: "abaya-velours", nameAr: "عباية مخملية ملكية", price: 850, compareAt: 1100, img1: "/images/cat-abayas.png", img2: "/images/hero-2.png", colors: ["#800020", "#1A1A2E"] },
+    { id: 3, slug: "chale-soie", nameAr: "شال حريري", price: 350, compareAt: null, img1: "/images/hero-2.png", img2: "/images/hero-1.png", colors: ["#F5F5DC", "#FFFFFF"] },
 ];
 
 const HOT_SELLERS = [
-    { id: 10, slug: "abaya-soie-ivoire", nameAr: "مخمل ليلي", price: 1450, img: "/images/hero-1.png", tag: "إصدار محدود" },
-    { id: 11, slug: "souliers-cuir-or", nameAr: "حذاء جلد ذهبي", price: 560, img: "/images/cat-shoes.png", tag: "الأكثر مبيعاً" },
-    { id: 12, slug: "hijab-premium-noir", nameAr: "كاب شرقي", price: 1100, img: "/images/hero-2.png", tag: "جديد" },
+    { id: 10, slug: "talons-hauts-or", nameAr: "حذاء كعب عالي ذهبي", price: 590, img: "/images/cat-shoes.png", tag: "إصدار محدود" },
+    { id: 11, slug: "pyjama-soie", nameAr: "بيجامة حريرية", price: 450, img: "/images/hero-1.png", tag: "الأكثر مبيعاً" },
+    { id: 12, slug: "sabots-classiques", nameAr: "سابو رجالي كلاسيك", price: 320, img: "/images/hero-2.png", tag: "جديد" },
 ];
 
 /* ─── Components ─────────────────────────────────────────── */
@@ -141,7 +142,7 @@ function HeroSection() {
                             variants={fadeUp}
                             className="text-[#C9A96E] text-[10px] md:text-[12px] tracking-[0.2em] uppercase max-w-sm mb-4"
                         >
-                            صيكان • عبايات • شيلان • أحذية
+                            الحقائب • العبايات • شيلان • أحذية نسائية • بيجامات • سابو رجالي
                         </motion.p>
 
                         {/* CTA */}
@@ -179,12 +180,12 @@ function HeroSection() {
 
 function MarqueeBar() {
     const BUBBLE_ITEMS = [
-        { img: "/images/cat-abayas.png", slug: "saikan", labelAr: "صيكان" },
+        { img: "/images/cat-abayas.png", slug: "bags", labelAr: "الحقائب" },
         { img: "/images/cat-abayas.png", slug: "abayas", labelAr: "العبايات" },
         { img: "/images/hero-1.png", slug: "shailan", labelAr: "شيلان" },
         { img: "/images/cat-shoes.png", slug: "shoes-women", labelAr: "أحذية نسائية" },
         { img: "/images/hero-2.png", slug: "pyjamas", labelAr: "بيجامات" },
-        { img: "/images/cat-shoes.png", slug: "shoes-men", labelAr: "صابو رجالي" },
+        { img: "/images/cat-shoes.png", slug: "shoes-men", labelAr: "سابو رجالي" },
     ];
 
     const MarqueeBlock = () => (

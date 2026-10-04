@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { CartDrawer } from "@/components/layout/CartDrawer";
 import { Providers } from "@/components/Providers";
+import StoreLayoutWrapper from "@/components/layout/StoreLayoutWrapper";
 
 export const metadata: Metadata = {
     title: "IMAD Mode — أناقة محتشمة فاخرة",
@@ -19,10 +17,7 @@ export default function RootLayout({
         <html lang="ar" dir="rtl">
             <body className="font-arabic">
                 <Providers>
-                    <Navbar />
-                    <CartDrawer />
-                    <main className="min-h-screen">{children}</main>
-                    <Footer />
+                    <StoreLayoutWrapper>{children}</StoreLayoutWrapper>
                 </Providers>
             </body>
         </html>

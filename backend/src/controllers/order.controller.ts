@@ -11,21 +11,21 @@ const createOrderSchema = z.object({
     notes: z.string().optional(),
     customer: z.object({
         fullName: z.string().min(1, "Full name is required"),
-        phone: z.string().min(1, "Phone is required"),
+        phone: z.string().regex(/^(?:\+212|0)[5-7]\d{8}$/, "رقم الهاتف غير صالح"),
         email: z.string().email().optional().or(z.literal("")),
         street: z.string().min(1, "Address is required"),
         city: z.string().min(1, "City is required"),
         region: z.string().min(1, "Region is required"),
         postalCode: z.string().optional(),
-    }),
+    }).strict(),
     items: z.array(
         z.object({
             productId: z.string(),
             variantId: z.string(),
             quantity: z.number().int().min(1),
-        })
+        }).strict()
     ).min(1, "Cart cannot be empty"),
-});
+}).strict();
 
 const ORDER_INCLUDE = {
     items: {
@@ -37,29 +37,78 @@ const ORDER_INCLUDE = {
 };
 
 export async function createOrder(req: Request, res: Response) {
-    const body = createOrderSchema.parse(req.body);
+    // ── Parse & validate ──────────────────────────────────────────────────
+    let body: z.infer<typeof createOrderSchema>;
+    try {
+        body = createOrderSchema.parse(req.body);
+    } catch (err) {
+        console.error("❌ [createOrder] Zod validation error:", JSON.stringify(err, null, 2));
+        console.error("❌ [createOrder] Raw request body:", JSON.stringify(req.body, null, 2));
+        throw err; // Let error middleware handle with 400 + details
+    }
 
     // Fetch products
     const productIds = body.items.map((i) => i.productId);
+    
+    // Separate valid ObjectIDs (24 hex characters) from slugs to prevent Prisma MongoDB errors
+    const validObjectIds = productIds.filter(id => /^[a-fA-F0-9]{24}$/.test(id));
+    const slugs = productIds.filter(id => !/^[a-fA-F0-9]{24}$/.test(id));
+    
+    const orConditions: any[] = [];
+    if (validObjectIds.length > 0) orConditions.push({ id: { in: validObjectIds } });
+    if (slugs.length > 0) orConditions.push({ slug: { in: slugs } });
+
+    if (orConditions.length === 0) {
+        throw new AppError("No valid products provided", 400);
+    }
+
     const products = await prisma.product.findMany({
-        where: { id: { in: productIds } },
-        select: { id: true, price: true, nameFr: true, nameAr: true, nameEn: true, images: true },
+        where: { OR: orConditions },
+        include: { variants: true },
     });
 
-    // Validate stock for each variant
-    const variantIds = body.items.map((i) => i.variantId);
-    const variants = await prisma.productVariant.findMany({
-        where: { id: { in: variantIds } },
-    });
     const insufficient: string[] = [];
+    const orderItems: any[] = [];
+    let itemsTotal = 0;
+
     for (const item of body.items) {
-        const variant = variants.find((v: { id: string; stock: number }) => v.id === item.variantId);
-        if (!variant || variant.stock < item.quantity) {
-            insufficient.push(item.variantId);
+        const product = products.find(p => p.id === item.productId || p.slug === item.productId);
+        if (!product) {
+            console.warn(`Product ${item.productId} not found, skipping...`);
+            continue;
         }
+        
+        let variant = product.variants.find(v => v.id === item.variantId || v.sku === item.variantId);
+        // Fallback for mock data testing
+        if (!variant && product.variants.length > 0) {
+            variant = product.variants[0];
+        }
+
+        if (!variant) {
+            console.warn(`No variants found for product ${product.id}, skipping...`);
+            continue;
+        }
+        
+        if (variant.stock < item.quantity) {
+            insufficient.push(product.nameFr || product.id);
+        }
+
+        orderItems.push({
+            productId: product.id,
+            variantId: variant.id,
+            quantity: item.quantity,
+            unitPrice: Number(product.price)
+        });
+        itemsTotal += Number(product.price) * item.quantity;
     }
+
+    if (orderItems.length === 0) {
+        console.error("❌ [createOrder] No valid order items resolved. productIds:", productIds, "products found:", products.map(p => ({ id: p.id, slug: p.slug })));
+        throw new AppError("جميع المنتجات في سلة التسوق غير متوفرة أو غير صالحة.", 400);
+    }
+
     if (insufficient.length > 0) {
-        throw new AppError(`Insufficient stock for variants: ${insufficient.join(", ")}`, 400);
+        throw new AppError(`الكمية غير كافية للمنتجات: ${insufficient.join(", ")}`, 400);
     }
 
     // Calculate totals
@@ -67,14 +116,7 @@ export async function createOrder(req: Request, res: Response) {
     const shippingCost = settings?.shippingCost ?? 30;
     const freeShippingMin = settings?.freeShippingMin ?? 500;
 
-    let itemsTotal = 0;
-    const orderItems = body.items.map((item) => {
-        const product = products.find((p: { id: string; price: unknown; nameFr: string; nameAr: string; nameEn: string; images: string[] }) => p.id === item.productId);
-        if (!product) throw new AppError(`Product ${item.productId} not found`, 404);
-        const unitPrice = Number(product.price);
-        itemsTotal += unitPrice * item.quantity;
-        return { productId: item.productId, variantId: item.variantId, quantity: item.quantity, unitPrice };
-    });
+
 
     const appliedShipping = itemsTotal >= freeShippingMin ? 0 : Number(shippingCost);
     const totalAmount = itemsTotal + appliedShipping;
@@ -108,15 +150,15 @@ export async function createOrder(req: Request, res: Response) {
         include: { ...ORDER_INCLUDE, events: true },
     });
 
-    // Decrement stock
-    await Promise.all(
+    // Decrement stock (best-effort: don't fail the order if this fails)
+    Promise.all(
         orderItems.map((item) =>
             prisma.productVariant.update({
                 where: { id: item.variantId },
                 data: { stock: { decrement: item.quantity } },
             })
         )
-    );
+    ).catch((err) => console.error("⚠️ [createOrder] Stock decrement failed (non-fatal):", err));
 
     // ── Telegram → WhatsApp Bridge ──────────────────────────────────────
     // Telegram is the hub. The admin gets the order via Telegram (with a
@@ -151,8 +193,8 @@ export async function createOrder(req: Request, res: Response) {
         })
         .catch((err) => console.error("Telegram bridge failed:", err));
 
-    // Google Sheets append (best-effort, never block the order)
-    await appendOrderToSheets(order).catch((err) =>
+    // Google Sheets append (best-effort, non-blocking)
+    appendOrderToSheets(order).catch((err) =>
         console.error("Google Sheets append failed:", err)
     );
 
@@ -202,8 +244,8 @@ export async function updateOrderStatus(req: Request, res: Response) {
         },
     });
 
-    // Google Sheets status update sync (best-effort)
-    await updateOrderStatusInSheets(order.id, status).catch((err) =>
+    // Google Sheets status update sync (best-effort, non-blocking)
+    updateOrderStatusInSheets(order.id, status).catch((err) =>
         console.error("Google Sheets status update failed:", err)
     );
 

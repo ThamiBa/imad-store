@@ -141,6 +141,8 @@ model Product {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
+  @@index([categoryId])
+  @@index([status])
   @@map("products")
 }
 
@@ -192,6 +194,8 @@ model Order {
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
 
+  @@index([status])
+  @@index([createdAt])
   @@map("orders")
 }
 

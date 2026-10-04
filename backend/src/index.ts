@@ -3,6 +3,7 @@ import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 import "express-async-errors";
 
 import { authRoutes } from "./routes/auth.routes";
@@ -39,11 +40,24 @@ app.get("/health", (_req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// ─── Rate Limiting ───────────────────────────────────────────────────────────
+const IS_DEV = process.env.NODE_ENV !== "production";
+const orderRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    // In development: effectively unlimited (10 000 requests).
+    // In production: strict 50 requests per 15 min per IP.
+    max: IS_DEV ? 10_000 : 50,
+    skip: () => IS_DEV, // Skip the limiter entirely in dev — no 429s during testing
+    message: "تم تجاوز الحد الأقصى للطلبات. يرجى المحاولة لاحقاً.",
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/api/orders", orderRoutes);
+app.use("/api/orders", orderRateLimiter, orderRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/telegram", telegramRoutes);

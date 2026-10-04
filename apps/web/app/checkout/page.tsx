@@ -50,7 +50,16 @@ function CheckoutContent() {
             clearCart();
         } catch (err: unknown) {
             console.error("Order failed:", err);
-            setErrorMsg("فشل في تسجيل طلبكم. برجاء التحقق من البيانات والمحاولة مجدداً.");
+            // Surface the real API error if available
+            const axiosErr = err as any;
+            const apiMsg = axiosErr?.response?.data?.error
+                ?? axiosErr?.response?.data?.details?.[0]?.message
+                ?? axiosErr?.message;
+            setErrorMsg(
+                apiMsg
+                    ? `خطأ: ${apiMsg}`
+                    : "فشل في تسجيل طلبكم. برجاء التحقق من البيانات والمحاولة مجدداً."
+            );
         } finally {
             setLoading(false);
         }
@@ -75,9 +84,9 @@ function CheckoutContent() {
                     href={`https://wa.me/212660560522?text=${encodeURIComponent("السلام عليكم، أؤكد طلبي رقم " + (orderId?.slice(-8).toUpperCase() ?? ""))}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#25D366] text-white text-[10px] tracking-[0.2em] uppercase font-bold py-3 px-8 hover:bg-[#128C7E] transition-all duration-300 mb-4"
+                    className="inline-flex items-center gap-3 bg-[#25D366] text-white text-sm tracking-[0.1em] font-bold py-4 px-12 rounded-full shadow-lg hover:bg-[#128C7E] hover:scale-105 transition-all duration-300 mb-6"
                 >
-                    💬 تواصل عبر واتساب
+                    <span className="text-xl">💬</span> تأكيد الطلب عبر الواتساب
                 </a>
                 <a
                     href="/"

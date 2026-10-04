@@ -1,47 +1,6 @@
-<div align="center">
-
 # 🌙 Imad Store — عماد ستور
 
-### Luxury Women's Veil & Modest Fashion E-Commerce
-
-*Élégance & Modestie · الأناقة والحشمة · Elegance & Modesty*
-
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org)
-[![React Native](https://img.shields.io/badge/React_Native-Expo-blue?logo=expo)](https://expo.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma)](https://prisma.io)
-[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?logo=supabase)](https://supabase.com)
-
----
-
-🇫🇷 **Français** · 🇲🇦 **العربية** · 🇬🇧 **English**
-
-[Live Demo](#) · [Admin Panel](#) · [API Docs](#) · [Report Bug](#)
-
-</div>
-
----
-
-## 📖 Table of Contents
-
-- [About the Project](#-about-the-project)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [Running the Apps](#-running-the-apps)
-- [i18n — Languages](#-i18n--languages)
-- [Payment Integration](#-payment-integration)
-- [WhatsApp Integration](#-whatsapp-integration)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
-## 🌟 About the Project
+## Project Overview & Features
 
 **Imad Store** is a full-stack, luxury e-commerce platform built for Moroccan women shopping for hijabs, niqabs, abayas, and modest fashion accessories.
 
@@ -63,6 +22,7 @@ The platform is designed with an elegant, high-end aesthetic and supports **thre
 ## ✨ Features
 
 ### 🛍️ Customer Storefront
+
 - Elegant homepage with hero, featured products, and category grid
 - Full product catalogue with filters (category, color, size, price range)
 - Product detail page with multi-image gallery, color picker, size guide
@@ -72,18 +32,21 @@ The platform is designed with an elegant, high-end aesthetic and supports **thre
 - Order tracking and history in personal account
 
 ### 💳 Payments
+
 - **Online** — Stripe card payment with 3D Secure support
 - **Cash on Delivery** — order confirmed, paid at the door
 - Automatic order confirmation email (Resend)
 - WhatsApp confirmation link after every order
 
 ### 💬 WhatsApp Support
+
 - Floating WhatsApp button (gold, animated pulse) on every page
 - Pre-filled messages in the customer's chosen language (FR / AR / EN)
 - Product-specific inquiry links
 - COD order follow-up link
 
 ### 👩‍💼 Admin Dashboard (`admin.imad-store.ma`)
+
 - Revenue & orders overview
 - Full product CRUD with multi-image upload (Supabase Storage)
 - Order management with status updates (Pending → Confirmed → Shipped → Delivered)
@@ -91,13 +54,14 @@ The platform is designed with an elegant, high-end aesthetic and supports **thre
 - Store settings (WhatsApp number, shipping cost, COD toggle)
 
 ### 📱 Mobile App
+
 - Available on iOS & Android (Expo / EAS Build)
 - Push notifications for order status updates
 - Same features as the web store
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Dependencies
 
 | Layer | Technology |
 |-------|-----------|
@@ -114,31 +78,13 @@ The platform is designed with an elegant, high-end aesthetic and supports **thre
 | **Fonts** | Cormorant Garamond · DM Sans · Amiri (Arabic) |
 | **Deployment** | Vercel (web) · Railway (backend) · EAS (mobile) |
 | **CI/CD** | GitHub Actions |
+| **HTTP Client** | Axios |
+| **Date Handling** | Day.js |
+| **Form Validation** | Zod |
 
 ---
 
-## 📁 Project Structure
-
-```
-imad-store/
-├── apps/
-│   ├── web/              # Next.js Web App (customer storefront)
-│   ├── mobile/           # React Native / Expo Mobile App
-├── admin/                # Admin Dashboard (Next.js — separate app)
-├── backend/              # Express.js REST API
-├── packages/
-│   └── shared/           # Shared TypeScript types & utilities
-├── docker-compose.yml    # Local dev database
-├── .github/workflows/    # CI/CD pipelines
-├── CLAUDE.md             # Agent build instructions (full spec)
-└── README.md
-```
-
-For the full file-by-file structure, see [`CLAUDE.md`](./CLAUDE.md).
-
----
-
-## 🚀 Getting Started
+## 📦 Setup & Installation
 
 ### Prerequisites
 
@@ -197,8 +143,9 @@ pnpm prisma db seed          # Seeds sample products & categories
 
 ### 6. Start All Services
 
+From root — starts backend + web + admin in parallel:
+
 ```bash
-# From root — starts backend + web + admin in parallel
 pnpm dev
 ```
 
@@ -212,7 +159,7 @@ pnpm --filter admin dev         # Admin → http://localhost:3001
 
 ---
 
-## 🔐 Environment Variables
+## 🔐 Environment Variables Configuration
 
 ### Backend — `backend/.env`
 
@@ -220,7 +167,7 @@ pnpm --filter admin dev         # Admin → http://localhost:3001
 # Server
 NODE_ENV=development
 PORT=4000
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:3000,http://localhost:3001
 
 # Database
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/imad_store
@@ -231,7 +178,7 @@ JWT_REFRESH_SECRET=your-refresh-secret-min-32-chars
 JWT_EXPIRES_IN=15m
 JWT_REFRESH_EXPIRES_IN=7d
 
-# Stripe
+# Stripe (test mode is free)
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
@@ -266,6 +213,8 @@ NEXT_PUBLIC_API_URL=http://localhost:4000/api
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 ```
+
+> 💡 **Important**: Replace all placeholder values (`xxxx`, `sk_test_...`, `eyJ...`, etc.) with your actual credentials from the respective dashboards (Supabase, Stripe, Resend, Twilio, etc.).
 
 ---
 
@@ -303,7 +252,7 @@ Default admin credentials (after seeding):
 - **Password:** `Admin123!`
 
 > 💡 The admin panel is a separate Next.js app — it runs independently of the customer storefront.
-
+>
 > ⚠️ Change these immediately in production.
 
 ### Mobile App
