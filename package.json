@@ -9,8 +9,7 @@
   ],
   "scripts": {
     "dev": "npx turbo run dev",
-    "build": "npm run build:web",
-    "build:web": "npm --prefix packages/shared run build && npm --prefix apps/web run build && node scripts/copy-standalone-assets.js",
+    "build": "npm --prefix packages/shared run build && npm --prefix apps/web run build && node scripts/copy-standalone-assets.js",
     "start": "node server.js",
     "lint": "npx turbo run lint"
   },
