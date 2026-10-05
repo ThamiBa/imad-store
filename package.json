@@ -2,12 +2,6 @@
   "name": "imad-store",
   "private": true,
   "packageManager": "npm@10.8.2",
-  "devEngines": {
-    "packageManager": {
-      "name": "npm",
-      "version": "10.8.2"
-    }
-  },
   "workspaces": [
     "apps/*",
     "packages/*",
