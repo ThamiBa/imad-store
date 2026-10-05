@@ -72,13 +72,13 @@ export async function createOrder(req: Request, res: Response) {
     let itemsTotal = 0;
 
     for (const item of body.items) {
-        const product = products.find(p => p.id === item.productId || p.slug === item.productId);
+        const product = products.find((p: any) => p.id === item.productId || p.slug === item.productId);
         if (!product) {
             console.warn(`Product ${item.productId} not found, skipping...`);
             continue;
         }
         
-        let variant = product.variants.find(v => v.id === item.variantId || v.sku === item.variantId);
+        let variant = product.variants.find((v: any) => v.id === item.variantId || v.sku === item.variantId);
         // Fallback for mock data testing
         if (!variant && product.variants.length > 0) {
             variant = product.variants[0];
@@ -103,7 +103,7 @@ export async function createOrder(req: Request, res: Response) {
     }
 
     if (orderItems.length === 0) {
-        console.error("❌ [createOrder] No valid order items resolved. productIds:", productIds, "products found:", products.map(p => ({ id: p.id, slug: p.slug })));
+        console.error("❌ [createOrder] No valid order items resolved. productIds:", productIds, "products found:", products.map((p: any) => ({ id: p.id, slug: p.slug })));
         throw new AppError("جميع المنتجات في سلة التسوق غير متوفرة أو غير صالحة.", 400);
     }
 

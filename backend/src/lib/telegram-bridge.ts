@@ -207,7 +207,7 @@ export async function bridgeOrderToAdmin(
         if (botToken) {
             const customerChatId = await prisma.telegramCustomer
                 .findUnique({ where: { phone: order.customerPhone } })
-                .then((c) => c?.chatId ?? null)
+                .then((c: any) => c?.chatId ?? null)
                 .catch(() => null);
 
             if (customerChatId) {
