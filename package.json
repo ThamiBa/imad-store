@@ -8,12 +8,12 @@
     "backend"
   ],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "npx turbo run dev",
     "build": "npm run build:web",
-    "build:web": "turbo run build --filter=web",
+    "build:web": "npx turbo run build --filter=web",
     "postbuild": "node scripts/copy-standalone-assets.js",
     "start": "node server.js",
-    "lint": "turbo run lint"
+    "lint": "npx turbo run lint"
   },
   "devDependencies": {
     "eslint": "^8.57.1",
