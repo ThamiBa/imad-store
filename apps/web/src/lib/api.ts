@@ -1,7 +1,21 @@
 import axios from "axios";
 
+const getBaseUrl = () => {
+    let url = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+    url = url.replace(/\/$/, ""); // remove trailing slash
+    
+    // Fix double /api/api if misconfigured
+    if (url.endsWith("/api/api")) {
+        url = url.replace(/\/api\/api$/, "/api");
+    } else if (!url.endsWith("/api")) {
+        // If they just provided the domain, append /api
+        url += "/api";
+    }
+    return url;
+};
+
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api",
+    baseURL: getBaseUrl(),
     headers: { "Content-Type": "application/json" },
 });
 
