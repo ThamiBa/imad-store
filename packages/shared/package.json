@@ -8,7 +8,7 @@
         "build": "npx tsc",
         "lint": "npx tsc --noEmit"
     },
-    "devDependencies": {
+    "dependencies": {
         "typescript": "^5.9.3"
     }
 }
