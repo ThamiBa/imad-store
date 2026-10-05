@@ -9,7 +9,10 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "npm run build:web",
+    "build:web": "turbo run build --filter=web",
+    "postbuild": "node scripts/copy-standalone-assets.js",
+    "start": "node server.js",
     "lint": "turbo run lint"
   },
   "devDependencies": {
