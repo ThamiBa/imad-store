@@ -64,13 +64,14 @@ export async function login(req: Request, res: Response) {
     const user = await prisma.user.findUnique({ where: { email: body.email } });
     console.log("USER FROM DB:", user);
 
-    // TEMPORARY BYPASS FOR ADMIN
-    if (body.email === "admin@imad-store.ma" && body.password === "Admin123456!") {
-        console.log("⚠️ TEMPORARY ADMIN BYPASS TRIGGERED ⚠️");
-        // We need a dummy user object if it doesn't exist to generate tokens
+    // ADMIN BYPASS: uses env vars so Hostinger ADMIN_EMAIL / ADMIN_PASSWORD take effect
+    const adminEmail = process.env.ADMIN_EMAIL ?? "admin@imad-store.ma";
+    const adminPassword = process.env.ADMIN_PASSWORD ?? "Admin123456!";
+
+    if (body.email === adminEmail && body.password === adminPassword) {
+        console.log("⚠️ ADMIN ENV BYPASS TRIGGERED ⚠️");
         const bypassUser = user || { id: "64a000000000000000000000", email: body.email, role: "ADMIN" };
         const { accessToken, refreshToken } = generateTokens(bypassUser as any);
-        
         return res.json({ success: true, data: { accessToken, refreshToken } });
     }
 

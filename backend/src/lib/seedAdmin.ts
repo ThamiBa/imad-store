@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 
-const ADMIN_EMAIL = "admin@imad-store.ma";
-const ADMIN_PASSWORD = "Admin123456!";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@imad-store.ma";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "Admin123456!";
 
 /** Ensures the admin user exists with a valid bcrypt hash. Safe to call on every boot. */
 async function ensureAdminExists(): Promise<void> {
@@ -56,8 +56,7 @@ const REAL_CATEGORIES = [
     { slug: "abayas", nameAr: "العبايات", nameFr: "Abayas", nameEn: "Abayas" },
     { slug: "shawls", nameAr: "شيلان", nameFr: "Châles", nameEn: "Shawls" },
     { slug: "womens-shoes", nameAr: "أحذية نسائية", nameFr: "Chaussures Femme", nameEn: "Women's Shoes" },
-    { slug: "pajamas", nameAr: "بيجامات", nameFr: "Pyjamas", nameEn: "Pajamas" },
-    { slug: "mens-clogs", nameAr: "سابو رجالي", nameFr: "Sabots Homme", nameEn: "Men's Clogs" }
+    { slug: "mens-clogs", nameAr: "صابو رجالي", nameFr: "Sabots Homme", nameEn: "Men's Clogs" }
 ];
 
 /** Ensures at least one category + product exist so checkout never fails on empty DB. */
