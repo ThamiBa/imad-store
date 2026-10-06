@@ -61,10 +61,16 @@ export async function login(req: Request, res: Response) {
     const body = loginSchema.parse(req.body);
 
     const user = await prisma.user.findUnique({ where: { email: body.email } });
-    if (!user) throw new AppError("Invalid credentials", 401);
+    if (!user) {
+        console.error(`Login failed: User not found for email ${body.email}`);
+        throw new AppError("Invalid credentials", 401);
+    }
 
     const valid = await bcrypt.compare(body.password, user.passwordHash);
-    if (!valid) throw new AppError("Invalid credentials", 401);
+    if (!valid) {
+        console.error(`Login failed: Password mismatch for email ${body.email}`);
+        throw new AppError("Invalid credentials", 401);
+    }
 
     const { accessToken, refreshToken } = generateTokens(user);
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
