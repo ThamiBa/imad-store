@@ -7,8 +7,8 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function main() {
-    const email = process.env.ADMIN_EMAIL || "admin@imad-store.ma";
-    const password = process.env.ADMIN_PASSWORD || "Admin123456!";
+    const email = "admin@imad-store.ma";
+    const password = "Admin123456!";
     const passwordHash = await bcrypt.hash(password, 10);
 
     console.log(`Deleting existing admin records for ${email} to prevent null field errors...`);
