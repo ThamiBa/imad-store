@@ -156,16 +156,16 @@ export function OverviewTab({ orders, products }: { orders: Order[]; products: P
 
     // ── Category revenue ──────────────────────────────────────────────────────
     const CATEGORY_LABELS: Record<string, string> = {
-        'bags': 'الحقائب', 'abayas': 'العبايات', 'shailan': 'شيلان',
-        'shoes-women': 'أحذية نسائية', 'pyjamas': 'بيجامات', 'shoes-men': 'سابو رجالي'
+        'bags': 'الحقائب', 'abayas': 'العبايات', 'shawls': 'شيلان',
+        'womens-shoes': 'أحذية نسائية', 'mens-clogs': 'صابو رجالي'
     };
     const categoryRevenue = useMemo(() => {
         const catMap: Record<string, number> = {};
         orders.forEach(o => {
             (o.items || []).forEach(item => {
                 const prod = products.find(p => p.id === item.productId);
-                const catSlug = prod?.category?.slug ?? 'Other';
-                const label = CATEGORY_LABELS[catSlug] ?? catSlug;
+                const catSlug = prod?.category?.slug ?? 'bags'; // default to bags
+                const label = CATEGORY_LABELS[catSlug] ?? CATEGORY_LABELS['bags'];
                 catMap[label] = (catMap[label] ?? 0) + item.unitPrice * item.quantity;
             });
         });
@@ -412,7 +412,7 @@ export function ProductsTab({ products, categories, onCreate, onUpdate, onDelete
                     </tr></thead>
                     <tbody>{products.map(p => (
                         <tr key={p.id} className="border-b border-white/5 hover:bg-white/[0.02]">
-                            <td className="py-2 px-2">{p.images[0] ? <img src={p.images[0]} alt="" className="w-10 h-10 object-cover rounded" /> : <div className="w-10 h-10 bg-white/5 rounded flex items-center justify-center"><ImageIcon size={14} className="text-white/20" /></div>}</td>
+                            <td className="py-2 px-2"><img src={p.images?.[0] || "https://placehold.co/600x600/e2e8f0/1e293b?text=No+Image"} alt="" className="w-10 h-10 object-cover rounded" /></td>
                             <td className="py-2 px-2"><p className="font-medium">{p.nameEn}</p><p className="text-[10px] text-white/40 font-mono">{p.slug}</p></td>
                             <td className="py-2 px-2 text-[#C9A96E]">{p.price.toFixed(2)} MAD</td>
                             <td className="py-2 px-2 text-white/60">{p.category?.nameEn ?? "—"}</td>

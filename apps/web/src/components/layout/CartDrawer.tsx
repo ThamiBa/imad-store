@@ -147,14 +147,8 @@ export function CartDrawer() {
                                             >
                                                 {/* Image — large and prominent */}
                                                 <div className="relative w-28 h-36 bg-[#F5EDE0] shrink-0 overflow-hidden group">
-                                                    {item.image ? (
-                                                        <Image src={item.image} alt={item.nameAr} fill
-                                                            className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center">
-                                                            <ShoppingBag size={32} strokeWidth={0.8} className="text-[#C9A96E]/20" />
-                                                        </div>
-                                                    )}
+                                                    <Image src={item.image || "https://placehold.co/600x600/e2e8f0/1e293b?text=No+Image"} alt={item.nameAr || "Item"} fill
+                                                        className="object-cover group-hover:scale-110 transition-transform duration-700" />
                                                     {/* Gold badge overlay */}
                                                     <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#1A1A2E]/50 to-transparent h-1/3 pointer-events-none" />
                                                 </div>

@@ -79,18 +79,20 @@ export function ProductCard({ product, locale, index = 0 }: Props) {
                 {/* ── Image container ── */}
                 <div className="relative aspect-[3/4] bg-[#F5EDE0] overflow-hidden">
 
-                    {/* Main image */}
-                    {product.images[imgIdx] ? (
+                    {product.images?.length > 0 ? (
                         <Image
-                            src={product.images[imgIdx]}
+                            src={product.images[imgIdx] || "https://placehold.co/600x600/e2e8f0/1e293b?text=No+Image"}
                             alt={name}
                             fill
                             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <ShoppingBag size={48} strokeWidth={0.8} className="text-[#C9A96E]/30" />
-                        </div>
+                        <Image
+                            src="https://placehold.co/600x600/e2e8f0/1e293b?text=No+Image"
+                            alt={name}
+                            fill
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        />
                     )}
 
                     {/* Gradient overlay on hover */}
