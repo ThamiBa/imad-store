@@ -30,6 +30,8 @@ function CheckoutContent() {
             productId: i.productId,
             variantId: i.variantId,
             quantity: i.quantity,
+            price: i.price,
+            name: i.nameAr || i.nameFr || i.nameEn || "Produit",
         }));
 
         try {

@@ -88,7 +88,7 @@ export interface GuestCheckoutPayload {
         region: string;
         postalCode?: string;
     };
-    items: { productId: string; variantId: string; quantity: number }[];
+    items: { productId: string; variantId: string; quantity: number; price?: number; name?: string }[];
     notes?: string;
 }
 
