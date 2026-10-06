@@ -16,7 +16,7 @@ import { settingsRoutes } from "./routes/settings.routes";
 import { telegramRoutes } from "./routes/telegram.routes";
 import { errorMiddleware } from "./middleware/error.middleware";
 import { syncSheetsToDatabase } from "./lib/notifications";
-import { ensureAdminExists } from "./lib/seedAdmin";
+import { ensureProductionData } from "./lib/seedAdmin";
 
 const app: Application = express();
 const PORT = process.env.PORT ?? 4000;
@@ -43,6 +43,16 @@ app.get("/health", (_req, res) => {
 
 app.get("/", (_req, res) => {
     res.json({ message: "Imad Store API is running. Please use /api for endpoints." });
+});
+
+// ─── One-time Seed Trigger (manual, safe to call anytime) ────────────────────
+app.get("/api/seed", async (_req, res) => {
+    try {
+        await ensureProductionData();
+        res.json({ success: true, message: "Production data seeded/verified successfully." });
+    } catch (err: any) {
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 // ─── Rate Limiting ───────────────────────────────────────────────────────────
@@ -75,8 +85,8 @@ app.use(errorMiddleware);
 // ─── Start ───────────────────────────────────────────────────────────────────
 app.listen(PORT, async () => {
     console.log(`🚀 Imad Store API running on http://localhost:${PORT}`);
-    // Auto-seed admin on every boot (safe no-op if hash is already valid)
-    await ensureAdminExists();
+    // Auto-seed admin + sample data on every boot (idempotent — safe no-op if data is valid)
+    await ensureProductionData();
 });
 
 // ─── Background Workers ──────────────────────────────────────────────────────
