@@ -155,24 +155,35 @@ export function OverviewTab({ orders, products }: { orders: Order[]; products: P
     }, [orders]);
 
     // ── Category revenue ──────────────────────────────────────────────────────
+    // Slug → Arabic label mapping (matches exactly what seedAdmin inserts)
     const CATEGORY_LABELS: Record<string, string> = {
-        'bags': 'الحقائب', 'abayas': 'العبايات', 'shawls': 'شيلان',
-        'womens-shoes': 'أحذية نسائية', 'mens-clogs': 'صابو رجالي'
+        'bags':         'الحقائب',
+        'abayas':       'العبايات',
+        'shawls':       'شيلان',
+        'womens-shoes': 'أحذية نسائية',
+        'mens-clogs':   'صابو رجالي',
     };
+    // All 5 columns always present — start with zero revenue
+    const ORDERED_CATS = Object.keys(CATEGORY_LABELS);
+
     const categoryRevenue = useMemo(() => {
+        // Base map with 0 for every category so all bars render
         const catMap: Record<string, number> = {};
+        ORDERED_CATS.forEach(slug => { catMap[CATEGORY_LABELS[slug]] = 0; });
+
         orders.forEach(o => {
             (o.items || []).forEach(item => {
                 const prod = products.find(p => p.id === item.productId);
-                const catSlug = prod?.category?.slug ?? 'bags'; // default to bags
-                const label = CATEGORY_LABELS[catSlug] ?? CATEGORY_LABELS['bags'];
+                const catSlug = prod?.category?.slug ?? 'bags';
+                // Map to a known slug; unknown slugs fall back to 'bags'
+                const resolvedSlug = CATEGORY_LABELS[catSlug] ? catSlug : 'bags';
+                const label = CATEGORY_LABELS[resolvedSlug];
                 catMap[label] = (catMap[label] ?? 0) + item.unitPrice * item.quantity;
             });
         });
-        if (Object.keys(catMap).length === 0) {
-            return Object.values(CATEGORY_LABELS).map((label, i) => ({ category: label, revenue: Math.random() * 5000 + 1000 }));
-        }
-        return Object.entries(catMap).map(([category, revenue]) => ({ category, revenue })).sort((a, b) => b.revenue - a.revenue);
+
+        // Preserve the canonical order (not sorted by revenue) so columns are stable
+        return ORDERED_CATS.map(slug => ({ category: CATEGORY_LABELS[slug], revenue: catMap[CATEGORY_LABELS[slug]] }));
     }, [orders, products]);
 
     // ── Order status pie ──────────────────────────────────────────────────────
