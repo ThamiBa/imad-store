@@ -21,6 +21,8 @@ const api = axios.create({
 
 // Attach admin token from localStorage if present (only used by /admin pages)
 api.interceptors.request.use((config) => {
+    // LOG EXACT URL BEING REQUESTED FOR DEBUGGING
+    console.log("AXIOS REQUEST URL:", config.baseURL, config.url, config.method);
     if (typeof window !== "undefined") {
         const token = localStorage.getItem("adminToken");
         if (token) config.headers.Authorization = `Bearer ${token}`;

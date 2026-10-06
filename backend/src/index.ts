@@ -40,6 +40,10 @@ app.get("/health", (_req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+app.get("/", (_req, res) => {
+    res.json({ message: "Imad Store API is running. Please use /api for endpoints." });
+});
+
 // ─── Rate Limiting ───────────────────────────────────────────────────────────
 const IS_DEV = process.env.NODE_ENV !== "production";
 const orderRateLimiter = rateLimit({
