@@ -16,6 +16,7 @@ import { settingsRoutes } from "./routes/settings.routes";
 import { telegramRoutes } from "./routes/telegram.routes";
 import { errorMiddleware } from "./middleware/error.middleware";
 import { syncSheetsToDatabase } from "./lib/notifications";
+import { ensureAdminExists } from "./lib/seedAdmin";
 
 const app: Application = express();
 const PORT = process.env.PORT ?? 4000;
@@ -72,8 +73,10 @@ app.use("/api/settings", settingsRoutes);
 app.use(errorMiddleware);
 
 // ─── Start ───────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`🚀 Imad Store API running on http://localhost:${PORT}`);
+    // Auto-seed admin on every boot (safe no-op if hash is already valid)
+    await ensureAdminExists();
 });
 
 // ─── Background Workers ──────────────────────────────────────────────────────
