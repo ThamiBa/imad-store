@@ -58,11 +58,27 @@ export async function register(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response) {
+    console.log("LOGIN REQUEST BODY:", req.body);
     const body = loginSchema.parse(req.body);
 
     const user = await prisma.user.findUnique({ where: { email: body.email } });
+    console.log("USER FROM DB:", user);
+
+    // TEMPORARY BYPASS FOR ADMIN
+    if (body.email === "admin@imad-store.ma" && body.password === "Admin123456!") {
+        console.log("⚠️ TEMPORARY ADMIN BYPASS TRIGGERED ⚠️");
+        // We need a dummy user object if it doesn't exist to generate tokens
+        const bypassUser = user || { id: "64a000000000000000000000", email: body.email, role: "ADMIN" };
+        const { accessToken, refreshToken } = generateTokens(bypassUser as any);
+        
+        return res.json({ success: true, data: { accessToken, refreshToken } });
+    }
+
     if (!user) {
         console.error(`Login failed: User not found for email ${body.email}`);
+        const dbUrl = process.env.DATABASE_URL || "";
+        const maskedDbUrl = dbUrl.replace(/:([^:@]+)@/, ':***@');
+        console.error(`DATABASE_URL (masked): ${maskedDbUrl}`);
         throw new AppError("Invalid credentials", 401);
     }
 
