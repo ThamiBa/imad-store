@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
         let apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
         apiUrl = apiUrl.replace(/\/$/, "");
@@ -11,7 +11,11 @@ export async function GET() {
             apiUrl += "/api";
         }
 
-        const res = await fetch(`${apiUrl}/seed`, { method: "GET", cache: "no-store" });
+        const url = new URL(req.url);
+        const clean = url.searchParams.get("clean") === "true";
+        
+        const fetchUrl = `${apiUrl}/seed${clean ? "?clean=true" : ""}`;
+        const res = await fetch(fetchUrl, { method: "GET", cache: "no-store" });
         const data = await res.json();
         
         return NextResponse.json(data, { status: res.status });

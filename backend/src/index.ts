@@ -46,10 +46,11 @@ app.get("/", (_req, res) => {
 });
 
 // ─── One-time Seed Trigger (manual, safe to call anytime) ────────────────────
-app.get("/api/seed", async (_req, res) => {
+app.get("/api/seed", async (req, res) => {
     try {
-        await ensureProductionData();
-        res.json({ success: true, message: "Production data seeded/verified successfully." });
+        const clean = req.query.clean === "true";
+        await ensureProductionData(clean);
+        res.json({ success: true, message: `Production data seeded/verified successfully. (clean=${clean})` });
     } catch (err: any) {
         res.status(500).json({ success: false, error: err.message });
     }
